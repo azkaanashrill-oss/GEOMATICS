@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEOMATICS v1.0</title>
+    <title>GEOMATICS v1.0 - SMK Negeri 1 Nganjuk</title>
     <style>
         /* Gaya & Tema Pemetaan (Earth & Surveying Theme) */
         :root {
             --primary-color: #2e7d32; /* Hijau Hutan/Peta */
             --secondary-color: #f57c00; /* Oranye Kompas */
-            --bg-dark: #1b2a1c; /* Gelap Bertema */
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --bg-dark: #1b2a1c;
+            --card-bg: rgba(255, 255, 255, 0.98);
         }
 
         * {
@@ -21,7 +21,6 @@
         }
 
         body {
-            /* Background bertema kontur/pemetaan abstrak menggunakan CSS gradasi */
             background: radial-gradient(circle at 20% 30%, #2e4f32 0%, #121f14 100%);
             background-attachment: fixed;
             color: #333;
@@ -34,7 +33,7 @@
 
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 1250px;
             background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
@@ -51,19 +50,29 @@
 
         header h1 {
             color: var(--primary-color);
-            font-size: 24px;
+            font-size: 22px;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        header h2 {
+            font-size: 16px;
+            color: #444;
+            margin-top: 5px;
         }
 
         header p {
             font-size: 12px;
             color: #666;
-            margin-top: 5px;
+            margin-top: 2px;
         }
 
         .menu-section {
             margin-bottom: 25px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
         }
 
         .input-group {
@@ -78,29 +87,22 @@
             font-size: 14px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 8px rgba(46, 125, 50, 0.3);
+            font-size: 15px;
         }
 
         button {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s;
@@ -111,9 +113,8 @@
             background-color: #1b5e20;
         }
 
-        /* Tampilan Hasil Perhitungan Beruntun */
         .result-box {
-            margin-top: 25px;
+            margin-top: 15px;
             background: #f1f8e9;
             border-left: 5px solid var(--secondary-color);
             padding: 15px;
@@ -123,29 +124,96 @@
 
         .result-box h3 {
             color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 16px;
-            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-size: 15px;
             border-bottom: 1px dashed #ccc;
             padding-bottom: 5px;
         }
 
         .step-calculation {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.6;
-            color: #222;
-        }
-
-        .step-line {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e0e0e0;
         }
 
         .highlight-res {
             font-weight: bold;
             color: var(--secondary-color);
+        }
+
+        /* --- DESAIN FITUR REGISTRASI SLAG/PESAWAT --- */
+        .setting-pesawat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .info-badge {
+            background-color: #f57c00;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- DESAIN TABEL PENGURAN WATERPASS --- */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table.survey-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: center;
+            background: #fff;
+        }
+
+        table.survey-table th, table.survey-table td {
+            border: 1px solid #888;
+            padding: 6px 4px;
+        }
+
+        table.survey-table th {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+
+        .bg-sub {
+            background-color: #f1f8e9;
+        }
+
+        table.survey-table input {
+            width: 95%;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        table.survey-table input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            background-color: #fffde7;
+        }
+
+        .calc-out {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #2e7d32;
         }
 
         /* Coming Soon Section */
@@ -174,10 +242,13 @@
 <div class="container">
     <header>
         <h1>GEOMATICS v1.0</h1>
-        <p>Aplikasi Perhitungan Bacaan Benang & Jarak</p>
+        <h2>PENGUKURAN WATERPASS DOUBLE STAND</h2>
+        <p>TEKNIK GEOMATIKA - SMK NEGERI 1 NGANJUK</p>
     </header>
 
     <div class="menu-section">
+        <h3>🔍 Cek Perhitungan Benang & Jarak Tunggal</h3>
+        <br>
         <div class="input-group">
             <label for="input_ba">Benang Atas (BA) - <small>Kosongkan jika ingin dicari</small></label>
             <input type="number" id="input_ba" placeholder="Masukkan angka BA (mm)...">
@@ -193,24 +264,81 @@
             <input type="number" id="input_bb" placeholder="Masukkan angka BB (mm)...">
         </div>
 
-        <button onclick="hitungPemetaan()">HITUNG SEKARANG</button>
+        <button onclick="hitungPemetaan()">HITUNG BENANG TUNGGAL</button>
+
+        <div class="result-box" id="resultBox">
+            <h3>Hasil Perhitungan Bertahap:</h3>
+            <div class="step-calculation" id="calcDetails"></div>
+        </div>
     </div>
 
-    <div class="result-box" id="resultBox">
-        <h3>Hasil Perhitungan Bertahap:</h3>
-        <div class="step-calculation" id="calcDetails">
+    <div class="menu-section">
+        <h3>📋 Tabel Pengukuran Waterpass Double Stand</h3>
+        <br>
+
+        <div class="setting-pesawat-grid">
+            <div class="input-group" style="margin-bottom:0;">
+                <label for="select_pesawat">Tempat Pesawat Maksimal:</label>
+                <select id="select_pesawat" onchange="updateKonfigurasiSlag()">
+                    <option value="2">P1 - P2</option>
+                    <option value="3" selected>P1 - P3</option>
+                    <option value="4">P1 - P4</option>
+                    <option value="5">P1 - P5</option>
+                    <option value="6">P1 - P6</option>
+                    <option value="7">P1 - P7</option>
+                    <option value="8">P1 - P8</option>
+                </select>
             </div>
+
+            <div class="info-badge" id="display_target">
+                Target/Slag Otomatis: 2 Slag
+            </div>
+
+            <div class="input-group" style="margin-bottom:0;">
+                <label for="elevasi_awal">Elevasi Awal (Meters):</label>
+                <input type="number" id="elevasi_awal" value="100.000" step="0.001" oninput="prosesKalkulasiTabel()">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="survey-table" id="tabelWaterpass">
+                <thead>
+                    <tr>
+                        <th rowspan="2">TEMPAT PESAWAT</th>
+                        <th rowspan="2">TARGET</th>
+                        <th colspan="2">PERGI</th>
+                        <th colspan="2">PULANG</th>
+                        <th rowspan="2">JARAK (m)</th>
+                        <th colspan="3">BEDA TINGGI (m)</th>
+                        <th rowspan="2">KOREKSI</th>
+                        <th rowspan="2">TINGGI TITIK (m)</th>
+                        <th rowspan="2">SKET SITUASI</th>
+                    </tr>
+                    <tr class="bg-sub">
+                        <th>BACAAN RAMBU (Belakang)</th>
+                        <th>BACAAN RAMBU (Muka)</th>
+                        <th>BACAAN RAMBU (Belakang)</th>
+                        <th>BACAAN RAMBU (Muka)</th>
+                        <th>PERGI</th>
+                        <th>PULANG</th>
+                        <th>RATA-RATA</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_tabel">
+                    </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="coming-soon-card">
         <h4>🚧 Fitur Selanjutnya</h4>
-        <p>Tunggu Update Selanjutnya (Menunggu Perintah)</p>
+        <p>Tunggu Updatenya, Dan Tunggu Fitur Baru Yang Akan Datang!</p>
     </div>
 </div>
 
 <script>
+    // --- 1. KALKULATOR TUNGGAL (BACAAN BENANG) ---
     function hitungPemetaan() {
-        // Mengambil input dan mengubah ke Integer (Tanpa Desimal)
         let ba_val = document.getElementById('input_ba').value;
         let bt_val = document.getElementById('input_bt').value;
         let bb_val = document.getElementById('input_bb').value;
@@ -220,76 +348,175 @@
         let BB = bb_val !== "" ? parseInt(bb_val) : null;
 
         let stepText = "";
-
-        // Validasi: Minimal 2 input harus diisi agar rumus bisa bekerja
         let inputCount = [BA, BT, BB].filter(v => v !== null).length;
+
         if (inputCount < 2) {
             alert("Harap masukkan minimal 2 nilai benang untuk menghitung!");
             return;
         }
 
-        // --- PERHITUNGAN BERTAHAP & BERUNTUN ---
-
-        // Kasus 1: Mencari BA jika BT dan BB diketahui
         if (BA === null && BT !== null && BB !== null) {
             BA = (2 * BT) - BB;
-            stepText += `<div class="step-line">
-                <strong>1. Langkah Mencari Benang Atas (BA):</strong><br>
-                Rumus: BA = (2 × BT) - BB<br>
-                Proses: (2 × ${BT}) - ${BB}<br>
-                Proses: ${2 * BT} - ${BB}<br>
-                Hasil BA = <span class="highlight-res">${BA} mm</span>
-            </div>`;
-        } 
-        // Kasus 2: Mencari BT jika BA dan BB diketahui
-        else if (BT === null && BA !== null && BB !== null) {
-            BT = Math.round((BA + BB) / 2); // murni integer dibulatkan terdekat jika ada ganjil
-            stepText += `<div class="step-line">
-                <strong>1. Langkah Mencari Benang Tengah (BT):</strong><br>
-                Rumus: BT = (BA + BB) : 2<br>
-                Proses: (${BA} + ${BB}) : 2<br>
-                Proses: ${BA + BB} : 2<br>
-                Hasil BT = <span class="highlight-res">${BT} mm</span>
-            </div>`;
-        } 
-        // Kasus 3: Mencari BB jika BT dan BA diketahui
-        else if (BB === null && BT !== null && BA !== null) {
+            stepText += `1. BA = (2 × ${BT}) - ${BB} = <span class="highlight-res">${BA} mm</span><br>`;
+        } else if (BT === null && BA !== null && BB !== null) {
+            BT = Math.round((BA + BB) / 2);
+            stepText += `1. BT = (${BA} + ${BB}) : 2 = <span class="highlight-res">${BT} mm</span><br>`;
+        } else if (BB === null && BT !== null && BA !== null) {
             BB = (2 * BT) - BA;
-            stepText += `<div class="step-line">
-                <strong>1. Langkah Mencari Benang Bawah (BB):</strong><br>
-                Rumus: BB = (2 × BT) - BA<br>
-                Proses: (2 × ${BT}) - ${BA}<br>
-                Proses: ${2 * BT} - ${BA}<br>
-                Hasil BB = <span class="highlight-res">${BB} mm</span>
-            </div>`;
+            stepText += `1. BB = (2 × ${BT}) - BA = <span class="highlight-res">${BB} mm</span><br>`;
         } else {
-            // Jika ketiga input sudah diisi, kita langsung tampilkan nilainya saja sebagai dasar
-            stepText += `<div class="step-line">
-                <strong>Informasi Input Benang:</strong><br>
-                BA = ${BA} mm<br>
-                BT = ${BT} mm<br>
-                BB = ${BB} mm
-            </div>`;
+            stepText += `Informasi: BA=${BA}mm, BT=${BT}mm, BB=${BB}mm<br>`;
         }
 
-        // --- MENGHITUNG JARAK D ---
-        // Rumus: D = (BA - BB) * 100
         let selisih = BA - BB;
         let D_mm = selisih * 100;
-        let D_m = D_mm / 1000; // konversi ke meter
+        let D_m = D_mm / 1000;
 
-        stepText += `<div class="step-line">
-            <strong>2. Langkah Mencari Jarak (D):</strong><br>
-            Rumus: D = (BA - BB) × 100<br>
-            Proses: (${BA} - ${BB}) × 100<br>
-            Proses: ${selisih} × 100<br>
-            Hasil Jarak D = <span class="highlight-res">${D_mm} mm / ${D_m} M</span>
-        </div>`;
+        stepText += `2. Jarak (D) = (${BA} - ${BB}) × 100 = ${D_mm} mm (<span class="highlight-res">${D_m} M</span>)`;
 
-        // Menampilkan output ke layar
         document.getElementById('calcDetails').innerHTML = stepText;
         document.getElementById('resultBox').style.display = 'block';
     }
+
+    // --- 2. LOGIKA KONFIGURASI TEMPAT PESAWAT & TARGET/SLAG ---
+    let totalPesawat = 3; 
+    let jumlahSlag = 2; // Slag = Jumlah Pesawat - 1
+
+    function updateKonfigurasiSlag() {
+        totalPesawat = parseInt(document.getElementById('select_pesawat').value);
+        jumlahSlag = totalPesawat - 1; // Penyesuaian otomatis Slag = P - 1
+        
+        document.getElementById('display_target').innerText = `Target/Slag Otomatis: ${jumlahSlag} Slag`;
+        inisialisasiTabel();
+    }
+
+    function inisialisasiTabel() {
+        let tbody = document.getElementById('tbody_tabel');
+        tbody.innerHTML = '';
+        for (let i = 1; i <= jumlahSlag; i++) {
+            tbody.innerHTML += buatBarisHTML(i);
+        }
+        prosesKalkulasiTabel();
+    }
+
+    function buatBarisHTML(i) {
+        return `
+        <tr id="row_${i}">
+            <td><input type="text" value="P${i}" id="p_${i}"></td>
+            <td><input type="text" value="P${i} - P${i+1}" id="t_${i}"></td>
+
+            <td>
+                <input type="number" placeholder="BA" id="ba_pergi_b_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BT" id="bt_pergi_b_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BB" id="bb_pergi_b_${i}" oninput="prosesKalkulasiTabel()">
+            </td>
+            <td>
+                <input type="number" placeholder="BA" id="ba_pergi_m_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BT" id="bt_pergi_m_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BB" id="bb_pergi_m_${i}" oninput="prosesKalkulasiTabel()">
+            </td>
+
+            <td>
+                <input type="number" placeholder="BA" id="ba_pulang_b_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BT" id="bt_pulang_b_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BB" id="bb_pulang_b_${i}" oninput="prosesKalkulasiTabel()">
+            </td>
+            <td>
+                <input type="number" placeholder="BA" id="ba_pulang_m_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BT" id="bt_pulang_m_${i}" oninput="prosesKalkulasiTabel()">
+                <input type="number" placeholder="BB" id="bb_pulang_m_${i}" oninput="prosesKalkulasiTabel()">
+            </td>
+
+            <td class="calc-out" id="jarak_${i}">-</td>
+            <td class="calc-out" id="beda_pergi_${i}">-</td>
+            <td class="calc-out" id="beda_pulang_${i}">-</td>
+            <td class="calc-out" id="rata_rata_${i}">-</td>
+            <td class="calc-out" id="koreksi_${i}">-</td>
+            <td class="calc-out" id="tinggi_titik_${i}">-</td>
+            <td><input type="text" placeholder="Sket"></td>
+        </tr>`;
+    }
+
+    function prosesKalkulasiTabel() {
+        let elevasiAwal = parseFloat(document.getElementById('elevasi_awal').value) || 0;
+        let elevasiBerjalan = elevasiAwal;
+
+        // 1. Hitung Total Rata-Rata Seluruh Slag untuk Pembagian Koreksi
+        let totalRataRata = 0;
+        let countSlagValid = 0;
+
+        for (let i = 1; i <= jumlahSlag; i++) {
+            let btPergiB = parseFloat(document.getElementById(`bt_pergi_b_${i}`).value) || 0;
+            let btPergiM = parseFloat(document.getElementById(`bt_pergi_m_${i}`).value) || 0;
+            let btPulangB = parseFloat(document.getElementById(`bt_pulang_b_${i}`).value) || 0;
+            let btPulangM = parseFloat(document.getElementById(`bt_pulang_m_${i}`).value) || 0;
+
+            if (btPergiB && btPergiM) {
+                let bedaPergi = (btPergiB - btPergiM) / 1000;
+                let bedaPulang = (btPulangB && btPulangM) ? ((btPulangB - btPulangM) / 1000) : bedaPergi;
+                let rataRata = (bedaPergi + bedaPulang) / 2;
+
+                totalRataRata += rataRata;
+                countSlagValid++;
+            }
+        }
+
+        // Koreksi per Slag = (Total Rata-rata / Jumlah Slag) * -1
+        let koreksiPerSlag = countSlagValid > 0 ? (totalRataRata / countSlagValid) * -1 : 0;
+
+        // 2. Kalkulasi Otomatis Setiap Baris Slag
+        for (let i = 1; i <= jumlahSlag; i++) {
+            let baPergiB = parseFloat(document.getElementById(`ba_pergi_b_${i}`).value);
+            let bbPergiB = parseFloat(document.getElementById(`bb_pergi_b_${i}`).value);
+            let btPergiB = parseFloat(document.getElementById(`bt_pergi_b_${i}`).value);
+            let btPergiM = parseFloat(document.getElementById(`bt_pergi_m_${i}`).value);
+
+            let btPulangB = parseFloat(document.getElementById(`bt_pulang_b_${i}`).value);
+            let btPulangM = parseFloat(document.getElementById(`bt_pulang_m_${i}`).value);
+
+            // Jarak D = (BA - BB) * 100 / 1000
+            if (!isNaN(baPergiB) && !isNaN(bbPergiB)) {
+                let jarak = ((baPergiB - bbPergiB) * 100) / 1000;
+                document.getElementById(`jarak_${i}`).innerText = jarak.toFixed(2) + " m";
+            } else {
+                document.getElementById(`jarak_${i}`).innerText = "-";
+            }
+
+            // Beda Tinggi & Koreksi
+            if (!isNaN(btPergiB) && !isNaN(btPergiM)) {
+                let bedaPergi = (btPergiB - btPergiM) / 1000;
+                document.getElementById(`beda_pergi_${i}`).innerText = bedaPergi.toFixed(3);
+
+                let bedaPulang = 0;
+                if (!isNaN(btPulangB) && !isNaN(btPulangM)) {
+                    bedaPulang = (btPulangB - btPulangM) / 1000;
+                    document.getElementById(`beda_pulang_${i}`).innerText = bedaPulang.toFixed(3);
+                } else {
+                    bedaPulang = bedaPergi;
+                    document.getElementById(`beda_pulang_${i}`).innerText = "-";
+                }
+
+                let rataRata = (bedaPergi + bedaPulang) / 2;
+                document.getElementById(`rata_rata_${i}`).innerText = rataRata.toFixed(3);
+
+                let koreksi = koreksiPerSlag;
+                document.getElementById(`koreksi_${i}`).innerText = koreksi.toFixed(4);
+
+                // Elevasi/Tinggi Titik Beruntun
+                elevasiBerjalan = elevasiBerjalan + rataRata + koreksi;
+                document.getElementById(`tinggi_titik_${i}`).innerText = elevasiBerjalan.toFixed(3) + " m";
+            } else {
+                document.getElementById(`beda_pergi_${i}`).innerText = "-";
+                document.getElementById(`beda_pulang_${i}`).innerText = "-";
+                document.getElementById(`rata_rata_${i}`).innerText = "-";
+                document.getElementById(`koreksi_${i}`).innerText = "-";
+                document.getElementById(`tinggi_titik_${i}`).innerText = "-";
+            }
+        }
+    }
+
+    // Jalankan inisialisasi awal saat halaman dibuka
+    window.onload = updateKonfigurasiSlag;
 </script>
 
 </body>
