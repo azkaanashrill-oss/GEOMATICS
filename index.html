@@ -44,7 +44,7 @@
 
         .container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1450px;
             background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
@@ -181,7 +181,7 @@
             font-size: 11px;
             text-align: center;
             background: #fff;
-            min-width: 1250px;
+            min-width: 1300px;
         }
 
         table.survey-table th, table.survey-table td {
@@ -227,10 +227,11 @@
             color: #2e7d32;
         }
 
-        .calc-out-jarak {
-            background-color: #e0f2f1;
+        .calc-avg-jarak {
+            background-color: #e8f5e9;
             font-weight: bold;
-            color: #00695c;
+            color: #1b5e20;
+            border-top: 2px solid #2e7d32 !important;
         }
 
         .proof-section {
@@ -420,9 +421,9 @@
             <h4>📐 Rumus & Solusi Penyelesaian Pengukuran Waterpass</h4>
             <div class="formula-grid">
                 <div class="formula-card">
-                    <strong>1. Jarak Total Per Slag ($D$):</strong><br>
-                    $$\text{Jarak Pergi (Baris 1)} = D_{\text{Belakang Pos 1}} + D_{\text{Muka Pos 1}}$$
-                    $$\text{Jarak Pulang (Baris 2)} = D_{\text{Belakang Pos 2}} + D_{\text{Muka Pos 2}}$$
+                    <strong>1. Perhitungan Jarak (m) per Slag:</strong><br>
+                    $$\text{Jarak Pergi (Atas)} = D_{\text{belakang, pergi}} + D_{\text{muka, pergi}}$$
+                    $$\text{Jarak Pulang (Bawah)} = D_{\text{muka, pulang}} + D_{\text{belakang, pulang}}$$
                     $$\text{Jarak Rata-rata (Baris 3)} = \frac{\text{Jarak Pergi} + \text{Jarak Pulang}}{2}$$
                 </div>
                 <div class="formula-card">
@@ -459,7 +460,6 @@
         return parsed.toString();
     }
 
-    // 1. KALKULATOR BENANG TUNGGAL
     function hitungPemetaan() {
         let ba_val = document.getElementById('input_ba').value;
         let bt_val = document.getElementById('input_bt').value;
@@ -502,9 +502,8 @@
         }
     }
 
-    // 2. LOGIKA TABEL WATERPASS
     let maxPesawat = 5; 
-    let jumlahSlag = 4;
+    let jumlahSlag = 4; 
 
     function updateKonfigurasiSlag() {
         let selectEl = document.getElementById('select_pesawat');
@@ -526,9 +525,10 @@
         for (let i = 1; i <= jumlahSlag; i++) {
             let pSelesai = (i === jumlahSlag) ? 1 : (i + 1);
             
-            // Sub-row 1: Posisi I (Pergi)
+            // Setiap Slag memiliki 3 baris
+            // Baris 1: Pergi (Belakang)
             let row1 = `
-            <tr id="row_${i}_b">
+            <tr id="row_${i}_1">
                 <td rowspan="3"><input type="text" value="TP${i}" id="p_${i}"></td>
                 <td><input type="text" value="P${i}" id="t_${i}_b"></td>
                 
@@ -554,10 +554,10 @@
                 <td rowspan="3"><input type="text" placeholder="Sket"></td>
             </tr>`;
 
-            // Sub-row 2: Posisi II (Pulang)
+            // Baris 2: Pulang (Muka)
             let row2 = `
-            <tr id="row_${i}_m">
-                <td><input type="text" value="P${pSelesai}" id="t_${i}_m"></td>
+            <tr id="row_${i}_2">
+                <td rowspan="2"><input type="text" value="P${pSelesai}" id="t_${i}_m"></td>
 
                 <td>-</td><td>-</td><td>-</td>
 
@@ -574,12 +574,16 @@
                 <td>-</td><td>-</td><td>-</td>
             </tr>`;
 
-            // Sub-row 3: Rata-Rata Jarak (Tambahan Kolom ke-3)
+            // Baris 3: Khusus Baris Kosong Hasil Rata-Rata Jarak Slag (Atas + Bawah) / 2
             let row3 = `
-            <tr id="row_${i}_rata_jarak" class="bg-sub">
-                <td colspan="7" style="text-align:right; font-weight:bold; font-size:10px;">Jarak Rata-rata (m):</td>
-                <td class="calc-out-jarak" id="jarak_rata_${i}">-</td>
-                <td colspan="6"></td>
+            <tr id="row_${i}_3">
+                <td>-</td><td>-</td><td>-</td>
+                <td>-</td><td>-</td><td>-</td>
+
+                <td class="calc-avg-jarak" id="jarak_rata_${i}">-</td>
+
+                <td>-</td><td>-</td><td>-</td>
+                <td>-</td><td>-</td><td>-</td>
             </tr>`;
 
             tbody.innerHTML += (row1 + row2 + row3);
@@ -588,7 +592,6 @@
         prosesKalkulasiTabel();
     }
 
-    // FUNGSI KALKULASI REAL-TIME TERMASUK REVISI JARAK
     function prosesKalkulasiTabel() {
         let elevasiInput = document.getElementById('elevasi_awal').value;
         let elevasiAwal = elevasiInput !== "" ? parseFloat(elevasiInput) : null;
@@ -609,45 +612,51 @@
         proofText += `<b>2. Perhitungan Jarak & Beda Tinggi Per Slag:</b><br>`;
 
         for (let i = 1; i <= jumlahSlag; i++) {
-            let bt1_b = parseFloat(document.getElementById(`bt_pos1_b_${i}`)?.value);
-            let bt1_m = parseFloat(document.getElementById(`bt_pos1_m_${i}`)?.value);
-            let bt2_b = parseFloat(document.getElementById(`bt_pos2_b_${i}`)?.value);
-            let bt2_m = parseFloat(document.getElementById(`bt_pos2_m_${i}`)?.value);
-
+            // Ambil Nilai Benang
             let ba1_b = parseFloat(document.getElementById(`ba_pos1_b_${i}`)?.value);
             let bb1_b = parseFloat(document.getElementById(`bb_pos1_b_${i}`)?.value);
+            let bt1_b = parseFloat(document.getElementById(`bt_pos1_b_${i}`)?.value);
+
             let ba1_m = parseFloat(document.getElementById(`ba_pos1_m_${i}`)?.value);
             let bb1_m = parseFloat(document.getElementById(`bb_pos1_m_${i}`)?.value);
+            let bt1_m = parseFloat(document.getElementById(`bt_pos1_m_${i}`)?.value);
 
             let ba2_b = parseFloat(document.getElementById(`ba_pos2_b_${i}`)?.value);
             let bb2_b = parseFloat(document.getElementById(`bb_pos2_b_${i}`)?.value);
+            let bt2_b = parseFloat(document.getElementById(`bt_pos2_b_${i}`)?.value);
+
             let ba2_m = parseFloat(document.getElementById(`ba_pos2_m_${i}`)?.value);
             let bb2_m = parseFloat(document.getElementById(`bb_pos2_m_${i}`)?.value);
+            let bt2_m = parseFloat(document.getElementById(`bt_pos2_m_${i}`)?.value);
 
-            // --- KALKULASI JARAK REVISI ---
-            let d_pos1_b = (!isNaN(ba1_b) && !isNaN(bb1_b)) ? ((ba1_b - bb1_b) * 100) / 1000 : null;
-            let d_pos1_m = (!isNaN(ba1_m) && !isNaN(bb1_m)) ? ((ba1_m - bb1_m) * 100) / 1000 : null;
-            let d_pos2_b = (!isNaN(ba2_b) && !isNaN(bb2_b)) ? ((ba2_b - bb2_b) * 100) / 1000 : null;
-            let d_pos2_m = (!isNaN(ba2_m) && !isNaN(bb2_m)) ? ((ba2_m - bb2_m) * 100) / 1000 : null;
+            // 1. Hitung Jarak Masing-masing Pembacaan
+            let d1_b = (!isNaN(ba1_b) && !isNaN(bb1_b)) ? ((ba1_b - bb1_b) * 100) / 1000 : null; // Belakang Pergi
+            let d1_m = (!isNaN(ba1_m) && !isNaN(bb1_m)) ? ((ba1_m - bb1_m) * 100) / 1000 : null; // Muka Pergi
+            let d2_b = (!isNaN(ba2_b) && !isNaN(bb2_b)) ? ((ba2_b - bb2_b) * 100) / 1000 : null; // Belakang Pulang
+            let d2_m = (!isNaN(ba2_m) && !isNaN(bb2_m)) ? ((ba2_m - bb2_m) * 100) / 1000 : null; // Muka Pulang
 
-            // 1. Jarak Pergi (Posisi 1) = D_Belakang + D_Muka
-            let jarakPergi = (d_pos1_b !== null && d_pos1_m !== null) ? (d_pos1_b + d_pos1_m) : null;
-            document.getElementById(`jarak_pergi_${i}`).innerText = formatAngka(jarakPergi);
+            // Jarak Pergi (Atas): Belakang Pergi + Muka Pergi
+            let jarakPergi = (d1_b !== null || d1_m !== null) ? ((d1_b || 0) + (d1_m || 0)) : null;
+            
+            // Jarak Pulang (Bawah): Muka Pulang + Belakang Pulang
+            let jarakPulang = (d2_m !== null || d2_b !== null) ? ((d2_m || 0) + (d2_b || 0)) : null;
 
-            // 2. Jarak Pulang (Posisi 2) = D_Belakang + D_Muka
-            let jarakPulang = (d_pos2_b !== null && d_pos2_m !== null) ? (d_pos2_b + d_pos2_m) : null;
-            document.getElementById(`jarak_pulang_${i}`).innerText = formatAngka(jarakPulang);
-
-            // 3. Jarak Rata-Rata = (Jarak Pergi + Jarak Pulang) / 2
+            // Jarak Rata-rata (Baris 3): (Jarak Pergi + Jarak Pulang) / 2
             let jarakRata = null;
             if (jarakPergi !== null && jarakPulang !== null) {
                 jarakRata = (jarakPergi + jarakPulang) / 2;
             } else if (jarakPergi !== null) {
-                jarakRata = jarakPergi; // Cadangan jika hanya Posisi I diisi
+                jarakRata = jarakPergi;
+            } else if (jarakPulang !== null) {
+                jarakRata = jarakPulang;
             }
+
+            // Tampilkan ke Tabel Jarak
+            document.getElementById(`jarak_pergi_${i}`).innerText = formatAngka(jarakPergi);
+            document.getElementById(`jarak_pulang_${i}`).innerText = formatAngka(jarakPulang);
             document.getElementById(`jarak_rata_${i}`).innerText = formatAngka(jarakRata);
 
-            // --- KALKULASI BEDA TINGGI ---
+            // 2. Hitung Beda Tinggi & Rata-rata Beda Tinggi
             if (!isNaN(bt1_b) && !isNaN(bt1_m)) {
                 let beda1 = (bt1_b - bt1_m) / 1000;
                 let beda2 = (!isNaN(bt2_b) && !isNaN(bt2_m)) ? ((bt2_b - bt2_m) / 1000) : beda1;
@@ -659,16 +668,15 @@
 
                 proofText += `<div style="background:#fff; padding:8px; border-radius:5px; margin:5px 0; border:1px solid #e0e0e0;">`;
                 proofText += `<b><u>SLAG / STAND ${i}:</u></b><br>`;
-                proofText += `$$\\text{Jarak Pergi} = ${formatAngka(d_pos1_b)} + ${formatAngka(d_pos1_m)} = \\mathbf{${formatAngka(jarakPergi)} \\text{ m}}$$`;
-                if (jarakPulang !== null) {
-                    proofText += `$$\\text{Jarak Pulang} = ${formatAngka(d_pos2_b)} + ${formatAngka(d_pos2_m)} = \\mathbf{${formatAngka(jarakPulang)} \\text{ m}}$$`;
-                }
-                proofText += `$$\\text{Jarak Rata-rata} = \\mathbf{${formatAngka(jarakRata)} \\text{ m}}$$`;
+                proofText += `$$\\text{Jarak Pergi (Atas)} = ${formatAngka(d1_b)} + ${formatAngka(d1_m)} = \\mathbf{${formatAngka(jarakPergi)} \\text{ m}}$$`;
+                proofText += `$$\\text{Jarak Pulang (Bawah)} = ${formatAngka(d2_m)} + ${formatAngka(d2_b)} = \\mathbf{${formatAngka(jarakPulang)} \\text{ m}}$$`;
+                proofText += `$$\\text{Jarak Rata-rata Slag} = \\frac{${formatAngka(jarakPergi)} + ${formatAngka(jarakPulang)}}{2} = \\mathbf{${formatAngka(jarakRata)} \\text{ m}}$$`;
+                proofText += `<br>`;
                 proofText += `$$\\text{Beda Tinggi Pergi} = \\frac{${formatAngka(bt1_b)} - ${formatAngka(bt1_m)}}{1000} = \\mathbf{${formatAngka(beda1)} \\text{ m}}$$`;
                 if (!isNaN(bt2_b) && !isNaN(bt2_m)) {
                     proofText += `$$\\text{Beda Tinggi Pulang} = \\frac{${formatAngka(bt2_b)} - ${formatAngka(bt2_m)}}{1000} = \\mathbf{${formatAngka(beda2)} \\text{ m}}$$`;
                 }
-                proofText += `$$\\text{Beda Tinggi Rata-rata} = \\frac{${formatAngka(beda1)} + ${formatAngka(beda2)}}{2} = \\mathbf{${formatAngka(rata)} \\text{ m}}$$`;
+                proofText += `$$\\text{Rata-rata Beda Tinggi} = \\frac{${formatAngka(beda1)} + ${formatAngka(beda2)}}{2} = \\mathbf{${formatAngka(rata)} \\text{ m}}$$`;
                 proofText += `</div>`;
 
                 totalRataRata += rata;
@@ -692,7 +700,6 @@
 
         proofText += `<br><b>4. Akumulasi Tinggi Titik:</b><br>`;
 
-        // Akumulasi Tinggi Titik
         for (let i = 1; i <= jumlahSlag; i++) {
             if (dataRata[i] !== null) {
                 let koreksi = koreksiPerSlag;
