@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEOMATICS v1.0 - SMK Negeri 1 Nganjuk</title>
     
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
     <style>
         /* Gaya & Tema Pemetaan (Earth & Surveying Theme) */
@@ -443,14 +451,14 @@
 </div>
 
 <script>
-    // --- FUNGSI FORMATTER ANGKA PRESISI (Tanpa Nol Percuma) ---
+    // FUNGSI FORMATTER ANGKA PRESISI (Tanpa Nol Percuma)
     function formatAngka(val, desimal = 4) {
         if (val === null || isNaN(val)) return "-";
         let parsed = parseFloat(val.toFixed(desimal));
         return parsed.toString();
     }
 
-    // --- 1. KALKULATOR BENANG TUNGGAL ---
+    // 1. KALKULATOR BENANG TUNGGAL
     function hitungPemetaan() {
         let ba_val = document.getElementById('input_ba').value;
         let bt_val = document.getElementById('input_bt').value;
@@ -484,21 +492,25 @@
 
         stepText += `$$D = \\frac{(${formatAngka(BA)} - ${formatAngka(BB)}) \\times 100}{1000} = \\mathbf{${formatAngka(D_m)} \\text{ m}}$$`;
 
-        document.getElementById('calcDetails').innerHTML = stepText;
+        let calcDetailsEl = document.getElementById('calcDetails');
+        calcDetailsEl.innerHTML = stepText;
         document.getElementById('resultBox').style.display = 'block';
 
-        if (window.MathJax) {
-            MathJax.typesetPromise([document.getElementById('calcDetails')]);
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            MathJax.typesetPromise([calcDetailsEl]).catch(err => console.log(err));
         }
     }
 
-    // --- 2. LOGIKA TABLE WATERPASS ---
+    // 2. LOGIKA TABEL WATERPASS
     let maxPesawat = 5; 
-    let jumlahSlag = 4; // Tempat Pesawat P1-P5 berarti 4 Slag (Slag = MaxPesawat - 1)
+    let jumlahSlag = 4; // P1-P5 = 4 Slag (Slag = MaxPesawat - 1)
 
     function updateKonfigurasiSlag() {
-        maxPesawat = parseInt(document.getElementById('select_pesawat').value);
-        jumlahSlag = maxPesawat - 1; // Pembenaran: Tempat Pesawat P1-P8 = 7 Slag
+        let selectEl = document.getElementById('select_pesawat');
+        if (!selectEl) return;
+        
+        maxPesawat = parseInt(selectEl.value);
+        jumlahSlag = maxPesawat - 1; // P1-P2 = 1 Slag, P1-P8 = 7 Slag
         
         document.getElementById('display_target').innerText = `Target/Slag Otomatis: ${jumlahSlag} Slag`;
         inisialisasiTabel();
@@ -506,6 +518,8 @@
 
     function inisialisasiTabel() {
         let tbody = document.getElementById('tbody_tabel');
+        if (!tbody) return;
+        
         tbody.innerHTML = '';
         
         for (let i = 1; i <= jumlahSlag; i++) {
@@ -586,15 +600,15 @@
         proofText += `<b>2. Perhitungan Beda Tinggi Per Slag:</b><br>`;
 
         for (let i = 1; i <= jumlahSlag; i++) {
-            let bt1_b = parseFloat(document.getElementById(`bt_pos1_b_${i}`).value);
-            let bt1_m = parseFloat(document.getElementById(`bt_pos1_m_${i}`).value);
-            let bt2_b = parseFloat(document.getElementById(`bt_pos2_b_${i}`).value);
-            let bt2_m = parseFloat(document.getElementById(`bt_pos2_m_${i}`).value);
+            let bt1_b = parseFloat(document.getElementById(`bt_pos1_b_${i}`)?.value);
+            let bt1_m = parseFloat(document.getElementById(`bt_pos1_m_${i}`)?.value);
+            let bt2_b = parseFloat(document.getElementById(`bt_pos2_b_${i}`)?.value);
+            let bt2_m = parseFloat(document.getElementById(`bt_pos2_m_${i}`)?.value);
 
-            let ba1_b = parseFloat(document.getElementById(`ba_pos1_b_${i}`).value);
-            let bb1_b = parseFloat(document.getElementById(`bb_pos1_b_${i}`).value);
-            let ba1_m = parseFloat(document.getElementById(`ba_pos1_m_${i}`).value);
-            let bb1_m = parseFloat(document.getElementById(`bb_pos1_m_${i}`).value);
+            let ba1_b = parseFloat(document.getElementById(`ba_pos1_b_${i}`)?.value);
+            let bb1_b = parseFloat(document.getElementById(`bb_pos1_b_${i}`)?.value);
+            let ba1_m = parseFloat(document.getElementById(`ba_pos1_m_${i}`)?.value);
+            let bb1_m = parseFloat(document.getElementById(`bb_pos1_m_${i}`)?.value);
 
             // Jarak (D) Posisi I
             if (!isNaN(ba1_b) && !isNaN(bb1_b)) {
@@ -673,14 +687,17 @@
             }
         }
 
-        document.getElementById('proofLog').innerHTML = proofText;
+        let proofLogEl = document.getElementById('proofLog');
+        proofLogEl.innerHTML = proofText;
 
-        if (window.MathJax) {
-            MathJax.typesetPromise([document.getElementById('proofLog')]);
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            MathJax.typesetPromise([proofLogEl]).catch(err => console.log(err));
         }
     }
 
-    window.onload = updateKonfigurasiSlag;
+    document.addEventListener('DOMContentLoaded', function() {
+        updateKonfigurasiSlag();
+    });
 </script>
 
 </body>
