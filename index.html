@@ -33,7 +33,7 @@
 
         .container {
             width: 100%;
-            max-width: 1350px;
+            max-width: 1400px;
             background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
@@ -178,11 +178,12 @@
             font-size: 11px;
             text-align: center;
             background: #fff;
+            min-width: 1250px;
         }
 
         table.survey-table th, table.survey-table td {
             border: 1px solid #444;
-            padding: 4px 2px;
+            padding: 5px 3px;
             vertical-align: middle;
         }
 
@@ -196,13 +197,20 @@
             background-color: #f1f8e9;
         }
 
+        /* Lebar Kolom Input Bacaan Benang */
+        .col-benang {
+            min-width: 55px;
+            width: 55px;
+        }
+
         table.survey-table input {
-            width: 98%;
-            padding: 3px 2px;
+            width: 100%;
+            padding: 4px 2px;
             border: 1px solid #ccc;
             border-radius: 3px;
             text-align: center;
             font-size: 11px;
+            box-sizing: border-box;
         }
 
         table.survey-table input:focus {
@@ -215,6 +223,35 @@
             background-color: #f5f5f5;
             font-weight: bold;
             color: #2e7d32;
+        }
+
+        /* --- PROSES PROOFING / LANGKAH PEMBUKTIAN --- */
+        .proof-section {
+            margin-top: 20px;
+            background: #eefbe8;
+            border: 1px solid #a5d6a7;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .proof-section h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 15px;
+            border-bottom: 2px solid #a5d6a7;
+            padding-bottom: 5px;
+        }
+
+        .proof-log {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px dashed #81c784;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         /* --- RUMUS & PENJELASAN PERHITUNGAN --- */
@@ -356,15 +393,22 @@
                         <th rowspan="2">POSISI II</th>
                     </tr>
                     <tr class="bg-sub">
-                        <th>BA</th> <th>BT</th> <th>BB</th>
-                        <th>BA</th> <th>BT</th> <th>BB</th>
-                        <th>BA</th> <th>BT</th> <th>BB</th>
-                        <th>BA</th> <th>BT</th> <th>BB</th>
+                        <th class="col-benang">BA</th> <th class="col-benang">BT</th> <th class="col-benang">BB</th>
+                        <th class="col-benang">BA</th> <th class="col-benang">BT</th> <th class="col-benang">BB</th>
+                        <th class="col-benang">BA</th> <th class="col-benang">BT</th> <th class="col-benang">BB</th>
+                        <th class="col-benang">BA</th> <th class="col-benang">BT</th> <th class="col-benang">BB</th>
                     </tr>
                 </thead>
                 <tbody id="tbody_tabel">
                 </tbody>
             </table>
+        </div>
+
+        <div class="proof-section">
+            <h4>📑 Langkah Perhitungan & Pembuktian Hasil Tabel</h4>
+            <div class="proof-log" id="proofLog">
+                <i>Masukkan data angka pada tabel di atas untuk menampilkan rincian kalkulasi...</i>
+            </div>
         </div>
 
         <div class="formula-section">
@@ -463,7 +507,7 @@
         for (let i = 1; i <= jumlahSlag; i++) {
             let pSelesai = (i === jumlahSlag) ? 1 : (i + 1);
             
-            // Sub-row Belakang
+            // Sub-row 1: Posisi I (Belakang) & Posisi II (Input Muka - Kolom Muka)
             let row1 = `
             <tr id="row_${i}_b">
                 <td rowspan="2"><input type="text" value="TP${i}" id="p_${i}"></td>
@@ -477,11 +521,11 @@
                 
                 <td class="calc-out" id="jarak_b_${i}">-</td>
                 
-                <td><input type="number" placeholder="BA" id="ba_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="bt_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="bb_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
-
                 <td>-</td><td>-</td><td>-</td>
+
+                <td><input type="number" placeholder="BA" id="ba_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BT" id="bt_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BB" id="bb_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
 
                 <td rowspan="2" class="calc-out" id="beda_pos1_${i}">-</td>
                 <td rowspan="2" class="calc-out" id="beda_pos2_${i}">-</td>
@@ -491,7 +535,7 @@
                 <td rowspan="2"><input type="text" placeholder="Sket"></td>
             </tr>`;
 
-            // Sub-row Muka
+            // Sub-row 2: Posisi I (Muka) & Posisi II (Input Belakang - Kolom Belakang)
             let row2 = `
             <tr id="row_${i}_m">
                 <td><input type="text" value="P${pSelesai}" id="t_${i}_m"></td>
@@ -504,11 +548,11 @@
 
                 <td class="calc-out" id="jarak_m_${i}">-</td>
 
-                <td>-</td><td>-</td><td>-</td>
+                <td><input type="number" placeholder="BA" id="ba_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BT" id="bt_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BB" id="bb_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
 
-                <td><input type="number" placeholder="BA" id="ba_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="bt_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="bb_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td>-</td><td>-</td><td>-</td>
             </tr>`;
 
             tbody.innerHTML += (row1 + row2);
@@ -517,7 +561,7 @@
         prosesKalkulasiTabel();
     }
 
-    // Fungsi Kalkulasi Otomatis Real-time
+    // Fungsi Kalkulasi Otomatis Real-time & Generasi Log Langkah
     function prosesKalkulasiTabel() {
         let elevasiInput = document.getElementById('elevasi_awal').value;
         let elevasiAwal = elevasiInput !== "" ? parseFloat(elevasiInput) : null;
@@ -526,6 +570,14 @@
         let totalRataRata = 0;
         let countSlagValid = 0;
         let dataRata = [];
+        let proofText = "";
+
+        proofText += `<b>=== BUKTI PERHITUNGAN ELEVASI WATERPASS ===</b><br>`;
+        if (elevasiAwal !== null) {
+            proofText += `Elevasi Awal Ditetapkan: <b>${elevasiAwal.toFixed(3)} m</b><br><br>`;
+        } else {
+            proofText += `<i>[!] Elevasi awal belum diisi (masukkan angka pada input Elevasi Awal di atas).</i><br><br>`;
+        }
 
         for (let i = 1; i <= jumlahSlag; i++) {
             let bt1_b = parseFloat(document.getElementById(`bt_pos1_b_${i}`).value);
@@ -538,16 +590,24 @@
             let ba1_m = parseFloat(document.getElementById(`ba_pos1_m_${i}`).value);
             let bb1_m = parseFloat(document.getElementById(`bb_pos1_m_${i}`).value);
 
-            // Hitung Otomatis Jarak (m)
+            proofText += `<b><u>SLAG / STAND ${i}:</u></b><br>`;
+
+            // Hitung Otomatis Jarak (m) Posisi I
             if (!isNaN(ba1_b) && !isNaN(bb1_b)) {
                 let d_b = ((ba1_b - bb1_b) * 100) / 1000;
                 document.getElementById(`jarak_b_${i}`).innerText = d_b.toFixed(1);
-            } else { document.getElementById(`jarak_b_${i}`).innerText = "-"; }
+                proofText += `- Jarak Belakang = ((${ba1_b} - ${bb1_b}) × 100) / 1000 = ${d_b.toFixed(1)} m<br>`;
+            } else { 
+                document.getElementById(`jarak_b_${i}`).innerText = "-"; 
+            }
 
             if (!isNaN(ba1_m) && !isNaN(bb1_m)) {
                 let d_m = ((ba1_m - bb1_m) * 100) / 1000;
                 document.getElementById(`jarak_m_${i}`).innerText = d_m.toFixed(1);
-            } else { document.getElementById(`jarak_m_${i}`).innerText = "-"; }
+                proofText += `- Jarak Muka     = ((${ba1_m} - ${bb1_m}) × 100) / 1000 = ${d_m.toFixed(1)} m<br>`;
+            } else { 
+                document.getElementById(`jarak_m_${i}`).innerText = "-"; 
+            }
 
             // Hitung Otomatis Beda Tinggi & Rata-rata
             if (!isNaN(bt1_b) && !isNaN(bt1_m)) {
@@ -559,6 +619,14 @@
                 document.getElementById(`beda_pos2_${i}`).innerText = beda2.toFixed(3);
                 document.getElementById(`rata_rata_${i}`).innerText = rata.toFixed(3);
 
+                proofText += `- Beda Tinggi Posisi I  = (${bt1_b} - ${bt1_m}) / 1000 = <b>${beda1.toFixed(3)} m</b><br>`;
+                if (!isNaN(bt2_b) && !isNaN(bt2_m)) {
+                    proofText += `- Beda Tinggi Posisi II = (${bt2_b} - ${bt2_m}) / 1000 = <b>${beda2.toFixed(3)} m</b><br>`;
+                } else {
+                    proofText += `- Beda Tinggi Posisi II = [BT Posisi II Belum Lengkap, disamakan Posisi I]<br>`;
+                }
+                proofText += `- Rata-Rata Beda Tinggi = (${beda1.toFixed(3)} + ${beda2.toFixed(3)}) / 2 = <b>${rata.toFixed(3)} m</b><br>`;
+
                 totalRataRata += rata;
                 countSlagValid++;
                 dataRata[i] = rata;
@@ -567,11 +635,20 @@
                 document.getElementById(`beda_pos2_${i}`).innerText = "-";
                 document.getElementById(`rata_rata_${i}`).innerText = "-";
                 dataRata[i] = null;
+                proofText += `<i>- [Data Benang Tengah Belakang/Muka Posisi I Belum Lengkap]</i><br>`;
             }
+            proofText += `<br>`;
         }
 
         // Hitung Otomatis Koreksi Per Slag
         let koreksiPerSlag = countSlagValid > 0 ? (totalRataRata * -1) / countSlagValid : 0;
+
+        proofText += `<b><u>REKAPITULASI & KOREKSI:</u></b><br>`;
+        proofText += `- Total Rata-Rata Beda Tinggi = <b>${totalRataRata.toFixed(3)} m</b><br>`;
+        proofText += `- Jumlah Slag Terisi          = <b>${countSlagValid} Slag</b><br>`;
+        proofText += `- Koreksi Per Slag            = (${totalRataRata.toFixed(3)} × -1) / ${countSlagValid || 1} = <b>${koreksiPerSlag.toFixed(4)} m</b><br><br>`;
+
+        proofText += `<b><u>AKUMULASI TINGGI TITIK:</u></b><br>`;
 
         // Hitung Otomatis Tinggi Titik Berlanjut
         for (let i = 1; i <= jumlahSlag; i++) {
@@ -580,16 +657,21 @@
                 document.getElementById(`koreksi_${i}`).innerText = koreksi === 0 ? "0" : koreksi.toFixed(4);
 
                 if (elevasiBerjalan !== null) {
+                    let elevSebelumnya = elevasiBerjalan;
                     elevasiBerjalan = elevasiBerjalan + dataRata[i] + koreksi;
                     document.getElementById(`tinggi_titik_${i}`).innerText = elevasiBerjalan.toFixed(3);
+                    proofText += `- Tinggi Titik ${i} = ${elevSebelumnya.toFixed(3)} + (${dataRata[i].toFixed(3)}) + (${koreksi.toFixed(4)}) = <b>${elevasiBerjalan.toFixed(3)} m</b><br>`;
                 } else {
                     document.getElementById(`tinggi_titik_${i}`).innerText = "-";
+                    proofText += `- Tinggi Titik ${i} = Elevasi awal belum diinput.<br>`;
                 }
             } else {
                 document.getElementById(`koreksi_${i}`).innerText = "-";
                 document.getElementById(`tinggi_titik_${i}`).innerText = "-";
             }
         }
+
+        document.getElementById('proofLog').innerHTML = proofText;
     }
 
     window.onload = updateKonfigurasiSlag;
