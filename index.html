@@ -227,11 +227,25 @@
             color: #2e7d32;
         }
 
-        .calc-avg-jarak {
-            background-color: #e8f5e9;
+        /* STYLING KHUSUS UNTUK BARIS JARAK RATA-RATA PERSIS GAMBAR */
+        .row-jarak-rata {
+            background-color: #e8f8ed !important;
             font-weight: bold;
+            font-size: 12px;
+        }
+
+        .label-jarak-rata {
+            text-align: right;
+            padding-right: 15px !important;
             color: #1b5e20;
-            border-top: 2px solid #2e7d32 !important;
+            font-weight: bold;
+        }
+
+        .val-jarak-rata {
+            background-color: #d1f2d9 !important;
+            color: #1b5e20;
+            font-weight: bold;
+            border: 1px solid #81c784 !important;
         }
 
         .proof-section {
@@ -525,11 +539,10 @@
         for (let i = 1; i <= jumlahSlag; i++) {
             let pSelesai = (i === jumlahSlag) ? 1 : (i + 1);
             
-            // Setiap Slag memiliki 3 baris
             // Baris 1: Pergi (Belakang)
             let row1 = `
             <tr id="row_${i}_1">
-                <td rowspan="3"><input type="text" value="TP${i}" id="p_${i}"></td>
+                <td rowspan="2"><input type="text" value="TP${i}" id="p_${i}"></td>
                 <td><input type="text" value="P${i}" id="t_${i}_b"></td>
                 
                 <td><input type="number" placeholder="BA" id="ba_pos1_b_${i}" oninput="prosesKalkulasiTabel()"></td>
@@ -546,18 +559,18 @@
                 <td><input type="number" placeholder="BT" id="bt_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
                 <td><input type="number" placeholder="BB" id="bb_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
 
-                <td rowspan="3" class="calc-out" id="beda_pos1_${i}">-</td>
-                <td rowspan="3" class="calc-out" id="beda_pos2_${i}">-</td>
-                <td rowspan="3" class="calc-out" id="rata_rata_${i}">-</td>
-                <td rowspan="3" class="calc-out" id="koreksi_${i}">-</td>
-                <td rowspan="3" class="calc-out" id="tinggi_titik_${i}">-</td>
-                <td rowspan="3"><input type="text" placeholder="Sket"></td>
+                <td rowspan="2" class="calc-out" id="beda_pos1_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="beda_pos2_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="rata_rata_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="koreksi_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="tinggi_titik_${i}">-</td>
+                <td rowspan="2"><input type="text" placeholder="Sket"></td>
             </tr>`;
 
             // Baris 2: Pulang (Muka)
             let row2 = `
             <tr id="row_${i}_2">
-                <td rowspan="2"><input type="text" value="P${pSelesai}" id="t_${i}_m"></td>
+                <td><input type="text" value="P${pSelesai}" id="t_${i}_m"></td>
 
                 <td>-</td><td>-</td><td>-</td>
 
@@ -574,16 +587,12 @@
                 <td>-</td><td>-</td><td>-</td>
             </tr>`;
 
-            // Baris 3: Khusus Baris Kosong Hasil Rata-Rata Jarak Slag (Atas + Bawah) / 2
+            // Baris 3: Tampilan Baru Jarak Rata-Rata Sesuai Contoh Gambar
             let row3 = `
-            <tr id="row_${i}_3">
-                <td>-</td><td>-</td><td>-</td>
-                <td>-</td><td>-</td><td>-</td>
-
-                <td class="calc-avg-jarak" id="jarak_rata_${i}">-</td>
-
-                <td>-</td><td>-</td><td>-</td>
-                <td>-</td><td>-</td><td>-</td>
+            <tr id="row_${i}_3" class="row-jarak-rata">
+                <td colspan="8" class="label-jarak-rata">Jarak Rata-rata (m):</td>
+                <td class="val-jarak-rata" id="jarak_rata_${i}">-</td>
+                <td colspan="10" style="background: #e8f8ed;">-</td>
             </tr>`;
 
             tbody.innerHTML += (row1 + row2 + row3);
@@ -612,7 +621,6 @@
         proofText += `<b>2. Perhitungan Jarak & Beda Tinggi Per Slag:</b><br>`;
 
         for (let i = 1; i <= jumlahSlag; i++) {
-            // Ambil Nilai Benang
             let ba1_b = parseFloat(document.getElementById(`ba_pos1_b_${i}`)?.value);
             let bb1_b = parseFloat(document.getElementById(`bb_pos1_b_${i}`)?.value);
             let bt1_b = parseFloat(document.getElementById(`bt_pos1_b_${i}`)?.value);
@@ -629,19 +637,14 @@
             let bb2_m = parseFloat(document.getElementById(`bb_pos2_m_${i}`)?.value);
             let bt2_m = parseFloat(document.getElementById(`bt_pos2_m_${i}`)?.value);
 
-            // 1. Hitung Jarak Masing-masing Pembacaan
-            let d1_b = (!isNaN(ba1_b) && !isNaN(bb1_b)) ? ((ba1_b - bb1_b) * 100) / 1000 : null; // Belakang Pergi
-            let d1_m = (!isNaN(ba1_m) && !isNaN(bb1_m)) ? ((ba1_m - bb1_m) * 100) / 1000 : null; // Muka Pergi
-            let d2_b = (!isNaN(ba2_b) && !isNaN(bb2_b)) ? ((ba2_b - bb2_b) * 100) / 1000 : null; // Belakang Pulang
-            let d2_m = (!isNaN(ba2_m) && !isNaN(bb2_m)) ? ((ba2_m - bb2_m) * 100) / 1000 : null; // Muka Pulang
+            let d1_b = (!isNaN(ba1_b) && !isNaN(bb1_b)) ? ((ba1_b - bb1_b) * 100) / 1000 : null;
+            let d1_m = (!isNaN(ba1_m) && !isNaN(bb1_m)) ? ((ba1_m - bb1_m) * 100) / 1000 : null;
+            let d2_b = (!isNaN(ba2_b) && !isNaN(bb2_b)) ? ((ba2_b - bb2_b) * 100) / 1000 : null;
+            let d2_m = (!isNaN(ba2_m) && !isNaN(bb2_m)) ? ((ba2_m - bb2_m) * 100) / 1000 : null;
 
-            // Jarak Pergi (Atas): Belakang Pergi + Muka Pergi
             let jarakPergi = (d1_b !== null || d1_m !== null) ? ((d1_b || 0) + (d1_m || 0)) : null;
-            
-            // Jarak Pulang (Bawah): Muka Pulang + Belakang Pulang
             let jarakPulang = (d2_m !== null || d2_b !== null) ? ((d2_m || 0) + (d2_b || 0)) : null;
 
-            // Jarak Rata-rata (Baris 3): (Jarak Pergi + Jarak Pulang) / 2
             let jarakRata = null;
             if (jarakPergi !== null && jarakPulang !== null) {
                 jarakRata = (jarakPergi + jarakPulang) / 2;
@@ -651,12 +654,10 @@
                 jarakRata = jarakPulang;
             }
 
-            // Tampilkan ke Tabel Jarak
             document.getElementById(`jarak_pergi_${i}`).innerText = formatAngka(jarakPergi);
             document.getElementById(`jarak_pulang_${i}`).innerText = formatAngka(jarakPulang);
             document.getElementById(`jarak_rata_${i}`).innerText = formatAngka(jarakRata);
 
-            // 2. Hitung Beda Tinggi & Rata-rata Beda Tinggi
             if (!isNaN(bt1_b) && !isNaN(bt1_m)) {
                 let beda1 = (bt1_b - bt1_m) / 1000;
                 let beda2 = (!isNaN(bt2_b) && !isNaN(bt2_m)) ? ((bt2_b - bt2_m) / 1000) : beda1;
@@ -690,7 +691,6 @@
             }
         }
 
-        // Koreksi Slag
         let koreksiPerSlag = countSlagValid > 0 ? (totalRataRata * -1) / countSlagValid : 0;
 
         proofText += `<br><b>3. Rekapitulasi & Koreksi Slag:</b><br>`;
