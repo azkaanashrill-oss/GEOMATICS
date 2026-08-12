@@ -227,7 +227,6 @@
             color: #2e7d32;
         }
 
-        /* STYLING KHUSUS UNTUK BARIS JARAK RATA-RATA PERSIS GAMBAR */
         .row-jarak-rata {
             background-color: #e8f8ed !important;
             font-weight: bold;
@@ -367,15 +366,16 @@
 
         <div class="setting-pesawat-grid">
             <div class="input-group" style="margin-bottom:0;">
-                <label for="select_pesawat">Tempat Pesawat Maksimal:</label>
+                <label for="select_pesawat">Tempat Pesawat (TP Maksimal):</label>
                 <select id="select_pesawat" onchange="updateKonfigurasiSlag()">
-                    <option value="2">P1 - P2 (1 Slag)</option>
-                    <option value="3">P1 - P3 (2 Slag)</option>
-                    <option value="4">P1 - P4 (3 Slag)</option>
-                    <option value="5" selected>P1 - P5 (4 Slag)</option>
-                    <option value="6">P1 - P6 (5 Slag)</option>
-                    <option value="7">P1 - P7 (6 Slag)</option>
-                    <option value="8">P1 - P8 (7 Slag)</option>
+                    <option value="1">1 Stand / Slag (TP1: P1–P1)</option>
+                    <option value="2">2 Stand / Slag (TP1–TP2: P1–P2, P2–P1)</option>
+                    <option value="3">3 Stand / Slag (TP1–TP3: P1–P2, P2–P3, P3–P1)</option>
+                    <option value="4" selected>4 Stand / Slag (TP1–TP4: P1–P2, P2–P3, P3–P4, P4–P1)</option>
+                    <option value="5">5 Stand / Slag (TP1–TP5: P1–P2, P2–P3, P3–P4, P4–P5, P5–P1)</option>
+                    <option value="6">6 Stand / Slag (TP1–TP6: P1–P2 ... P6–P1)</option>
+                    <option value="7">7 Stand / Slag (TP1–TP7: P1–P2 ... P7–P1)</option>
+                    <option value="8">8 Stand / Slag (TP1–TP8: P1–P2 ... P8–P1)</option>
                 </select>
             </div>
 
@@ -516,15 +516,13 @@
         }
     }
 
-    let maxPesawat = 5; 
     let jumlahSlag = 4; 
 
     function updateKonfigurasiSlag() {
         let selectEl = document.getElementById('select_pesawat');
         if (!selectEl) return;
         
-        maxPesawat = parseInt(selectEl.value);
-        jumlahSlag = maxPesawat - 1; 
+        jumlahSlag = parseInt(selectEl.value);
         
         document.getElementById('display_target').innerText = `Target/Slag Otomatis: ${jumlahSlag} Slag`;
         inisialisasiTabel();
@@ -537,13 +535,15 @@
         tbody.innerHTML = '';
         
         for (let i = 1; i <= jumlahSlag; i++) {
-            let pSelesai = (i === jumlahSlag) ? 1 : (i + 1);
+            // Urutan Target: P1-P2, P2-P3, ... , P(N)-P1
+            let targetBelakang = `P${i}`;
+            let targetMuka = (i === jumlahSlag) ? `P1` : `P${i + 1}`;
             
             // Baris 1: Pergi (Belakang)
             let row1 = `
             <tr id="row_${i}_1">
                 <td rowspan="2"><input type="text" value="TP${i}" id="p_${i}"></td>
-                <td><input type="text" value="P${i}" id="t_${i}_b"></td>
+                <td><input type="text" value="${targetBelakang}" id="t_${i}_b"></td>
                 
                 <td><input type="number" placeholder="BA" id="ba_pos1_b_${i}" oninput="prosesKalkulasiTabel()"></td>
                 <td><input type="number" placeholder="BT" id="bt_pos1_b_${i}" oninput="prosesKalkulasiTabel()"></td>
@@ -570,7 +570,7 @@
             // Baris 2: Pulang (Muka)
             let row2 = `
             <tr id="row_${i}_2">
-                <td><input type="text" value="P${pSelesai}" id="t_${i}_m"></td>
+                <td><input type="text" value="${targetMuka}" id="t_${i}_m"></td>
 
                 <td>-</td><td>-</td><td>-</td>
 
@@ -587,7 +587,7 @@
                 <td>-</td><td>-</td><td>-</td>
             </tr>`;
 
-            // Baris 3: Tampilan Baru Jarak Rata-Rata Sesuai Contoh Gambar
+            // Baris 3: Jarak Rata-Rata
             let row3 = `
             <tr id="row_${i}_3" class="row-jarak-rata">
                 <td colspan="8" class="label-jarak-rata">Jarak Rata-rata (m):</td>
