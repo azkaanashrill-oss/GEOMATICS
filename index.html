@@ -436,18 +436,18 @@
             <div class="formula-grid">
                 <div class="formula-card">
                     <strong>1. Perhitungan Jarak (m) per Slag:</strong><br>
-                    $$\text{Jarak Pergi (Atas)} = D_{\text{belakang, pergi}} + D_{\text{muka, pergi}}$$
-                    $$\text{Jarak Pulang (Bawah)} = D_{\text{muka, pulang}} + D_{\text{belakang, pulang}}$$
-                    $$\text{Jarak Rata-rata (Baris 3)} = \frac{\text{Jarak Pergi} + \text{Jarak Pulang}}{2}$$
+                    $$\text{Jarak Posisi I (Atas)} = D_{\text{belakang, Pos I}} + D_{\text{muka, Pos I}}$$
+                    $$\text{Jarak Posisi II (Bawah)} = D_{\text{belakang, Pos II}} + D_{\text{muka, Pos II}}$$
+                    $$\text{Jarak Rata-rata (Baris 3)} = \frac{\text{Jarak Posisi I} + \text{Jarak Posisi II}}{2}$$
                 </div>
                 <div class="formula-card">
                     <strong>2. Beda Tinggi Posisi I & II:</strong><br>
-                    $$\text{Beda Tinggi Pergi} = BTB_{\text{pergi}} - BTM_{\text{pergi}}$$
-                    $$\text{Beda Tinggi Pulang} = BTB_{\text{pulang}} - BTM_{\text{pulang}}$$
+                    $$\text{Beda Tinggi Posisi I} = BTB_{\text{Pos I}} - BTM_{\text{Pos I}}$$
+                    $$\text{Beda Tinggi Posisi II} = BTB_{\text{Pos II}} - BTM_{\text{Pos II}}$$
                 </div>
                 <div class="formula-card">
                     <strong>3. Beda Tinggi Rata-Rata:</strong><br>
-                    $$\text{Rata-rata} = \frac{\text{Beda tinggi pergi} + \text{Beda tinggi pulang}}{2}$$
+                    $$\text{Rata-rata} = \frac{\text{Beda tinggi Posisi I} + \text{Beda tinggi Posisi II}}{2}$$
                 </div>
                 <div class="formula-card">
                     <strong>4. Koreksi Slag:</strong><br>
@@ -539,7 +539,7 @@
             let targetBelakang = `P${i}`;
             let targetMuka = (i === jumlahSlag) ? `P1` : `P${i + 1}`;
             
-            // Baris 1: Pergi (Belakang)
+            // Baris 1: Belakang (Posisi I & Posisi II diisi Belakang dulu)
             let row1 = `
             <tr id="row_${i}_1">
                 <td rowspan="2"><input type="text" value="TP${i}" id="p_${i}"></td>
@@ -553,11 +553,11 @@
                 
                 <td class="calc-out" id="jarak_pergi_${i}">-</td>
                 
-                <td>-</td><td>-</td><td>-</td>
+                <td><input type="number" placeholder="BA" id="ba_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BT" id="bt_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BB" id="bb_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
 
-                <td><input type="number" placeholder="BA" id="ba_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="bt_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="bb_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td>-</td><td>-</td><td>-</td>
 
                 <td rowspan="2" class="calc-out" id="beda_pos1_${i}">-</td>
                 <td rowspan="2" class="calc-out" id="beda_pos2_${i}">-</td>
@@ -567,7 +567,7 @@
                 <td rowspan="2"><input type="text" placeholder="Sket"></td>
             </tr>`;
 
-            // Baris 2: Pulang (Muka)
+            // Baris 2: Muka (Posisi I & Posisi II diisi Muka setelah Belakang)
             let row2 = `
             <tr id="row_${i}_2">
                 <td><input type="text" value="${targetMuka}" id="t_${i}_m"></td>
@@ -580,11 +580,11 @@
 
                 <td class="calc-out" id="jarak_pulang_${i}">-</td>
 
-                <td><input type="number" placeholder="BA" id="ba_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="bt_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="bb_pos2_b_${i}" oninput="prosesKalkulasiTabel()"></td>
-
                 <td>-</td><td>-</td><td>-</td>
+
+                <td><input type="number" placeholder="BA" id="ba_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BT" id="bt_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BB" id="bb_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
             </tr>`;
 
             // Baris 3: Jarak Rata-Rata
@@ -643,7 +643,7 @@
             let d2_m = (!isNaN(ba2_m) && !isNaN(bb2_m)) ? ((ba2_m - bb2_m) * 100) / 1000 : null;
 
             let jarakPergi = (d1_b !== null || d1_m !== null) ? ((d1_b || 0) + (d1_m || 0)) : null;
-            let jarakPulang = (d2_m !== null || d2_b !== null) ? ((d2_m || 0) + (d2_b || 0)) : null;
+            let jarakPulang = (d2_b !== null || d2_m !== null) ? ((d2_b || 0) + (d2_m || 0)) : null;
 
             let jarakRata = null;
             if (jarakPergi !== null && jarakPulang !== null) {
@@ -669,13 +669,13 @@
 
                 proofText += `<div style="background:#fff; padding:8px; border-radius:5px; margin:5px 0; border:1px solid #e0e0e0;">`;
                 proofText += `<b><u>SLAG / STAND ${i}:</u></b><br>`;
-                proofText += `$$\\text{Jarak Pergi (Atas)} = ${formatAngka(d1_b)} + ${formatAngka(d1_m)} = \\mathbf{${formatAngka(jarakPergi)} \\text{ m}}$$`;
-                proofText += `$$\\text{Jarak Pulang (Bawah)} = ${formatAngka(d2_m)} + ${formatAngka(d2_b)} = \\mathbf{${formatAngka(jarakPulang)} \\text{ m}}$$`;
+                proofText += `$$\\text{Jarak Posisi I (Atas)} = ${formatAngka(d1_b)} + ${formatAngka(d1_m)} = \\mathbf{${formatAngka(jarakPergi)} \\text{ m}}$$`;
+                proofText += `$$\\text{Jarak Posisi II (Bawah)} = ${formatAngka(d2_b)} + ${formatAngka(d2_m)} = \\mathbf{${formatAngka(jarakPulang)} \\text{ m}}$$`;
                 proofText += `$$\\text{Jarak Rata-rata Slag} = \\frac{${formatAngka(jarakPergi)} + ${formatAngka(jarakPulang)}}{2} = \\mathbf{${formatAngka(jarakRata)} \\text{ m}}$$`;
                 proofText += `<br>`;
-                proofText += `$$\\text{Beda Tinggi Pergi} = \\frac{${formatAngka(bt1_b)} - ${formatAngka(bt1_m)}}{1000} = \\mathbf{${formatAngka(beda1)} \\text{ m}}$$`;
+                proofText += `$$\\text{Beda Tinggi Posisi I} = \\frac{${formatAngka(bt1_b)} - ${formatAngka(bt1_m)}}{1000} = \\mathbf{${formatAngka(beda1)} \\text{ m}}$$`;
                 if (!isNaN(bt2_b) && !isNaN(bt2_m)) {
-                    proofText += `$$\\text{Beda Tinggi Pulang} = \\frac{${formatAngka(bt2_b)} - ${formatAngka(bt2_m)}}{1000} = \\mathbf{${formatAngka(beda2)} \\text{ m}}$$`;
+                    proofText += `$$\\text{Beda Tinggi Posisi II} = \\frac{${formatAngka(bt2_b)} - ${formatAngka(bt2_m)}}{1000} = \\mathbf{${formatAngka(beda2)} \\text{ m}}$$`;
                 }
                 proofText += `$$\\text{Rata-rata Beda Tinggi} = \\frac{${formatAngka(beda1)} + ${formatAngka(beda2)}}{2} = \\mathbf{${formatAngka(rata)} \\text{ m}}$$`;
                 proofText += `</div>`;
