@@ -44,7 +44,7 @@
 
         .container {
             width: 100%;
-            max-width: 1450px;
+            max-width: 1550px;
             background: var(--card-bg);
             border-radius: 15px;
             padding: 25px;
@@ -181,7 +181,7 @@
             font-size: 11px;
             text-align: center;
             background: #fff;
-            min-width: 1300px;
+            min-width: 1450px;
         }
 
         table.survey-table th, table.survey-table td {
@@ -401,7 +401,8 @@
                         <th colspan="2">BEDA TINGGI</th>
                         <th rowspan="3">RATA RATA</th>
                         <th rowspan="3">KOREKSI</th>
-                        <th rowspan="3">TINGGI TITIK</th>
+                        <th colspan="2">TINGGI TITIK</th>
+                        <th rowspan="3">HASIL</th>
                         <th rowspan="3">SKET SITUASI</th>
                     </tr>
                     <tr class="bg-sub">
@@ -409,6 +410,8 @@
                         <th colspan="3">MUKA</th>
                         <th colspan="3">BELAKANG</th>
                         <th colspan="3">MUKA</th>
+                        <th rowspan="2">POSISI I</th>
+                        <th rowspan="2">POSISI II</th>
                         <th rowspan="2">POSISI I</th>
                         <th rowspan="2">POSISI II</th>
                     </tr>
@@ -438,7 +441,7 @@
                     <strong>1. Perhitungan Jarak (m) per Slag:</strong><br>
                     $$\text{Jarak Posisi I (Atas)} = D_{\text{belakang, Pos I}} + D_{\text{muka, Pos I}}$$
                     $$\text{Jarak Posisi II (Bawah)} = D_{\text{belakang, Pos II}} + D_{\text{muka, Pos II}}$$
-                    $$\text{Jarak Rata-rata (Baris 3)} = \frac{\text{Jarak Posisi I} + \text{Jarak Posisi II}}{2}$$
+                    $$\text{Jarak Rata-rata} = \frac{\text{Jarak Posisi I} + \text{Jarak Posisi II}}{2}$$
                 </div>
                 <div class="formula-card">
                     <strong>2. Beda Tinggi Posisi I & II:</strong><br>
@@ -446,16 +449,15 @@
                     $$\text{Beda Tinggi Posisi II} = BTB_{\text{Pos II}} - BTM_{\text{Pos II}}$$
                 </div>
                 <div class="formula-card">
-                    <strong>3. Beda Tinggi Rata-Rata:</strong><br>
-                    $$\text{Rata-rata} = \frac{\text{Beda tinggi Posisi I} + \text{Beda tinggi Posisi II}}{2}$$
-                </div>
-                <div class="formula-card">
-                    <strong>4. Koreksi Slag:</strong><br>
-                    $$\text{Koreksi} = \frac{\text{Jumlah rata-rata} \times -1}{\text{Jumlah Slag}}$$
+                    <strong>3. Beda Tinggi Rata-Rata & Koreksi:</strong><br>
+                    $$\text{Rata-rata} = \frac{\text{Beda Tinggi Pos I} + \text{Beda Tinggi Pos II}}{2}$$
+                    $$\text{Koreksi} = \frac{\sum \text{Rata-rata} \times -1}{\text{Jumlah Slag}}$$
                 </div>
                 <div class="formula-card" style="grid-column: 1 / -1;">
-                    <strong>5. Tinggi Titik / Elevasi Berlanjut:</strong><br>
-                    $$\text{Tinggi Titik} = \text{Elevasi awal} + \text{Rata-rata} + \text{Koreksi}$$
+                    <strong>4. Akumulasi Beruntun Tinggi Titik (Posisi I, II, & Hasil):</strong><br>
+                    $$\text{Tinggi Titik 1 (Posisi I Beruntun Kebawah): } T_{1, \text{TP}_i} = T_{\text{sebelumnya}} + \Delta H_{\text{Pos1}, i} + \text{Rata-rata}_i + \text{Koreksi}_i$$
+                    $$\text{Tinggi Titik 2 (Posisi II Beruntun Keatas): } T_{2, \text{TP}_i} = T_{\text{sesudahnya}} + \Delta H_{\text{Pos2}, i} + \text{Rata-rata}_i + \text{Koreksi}_i$$
+                    $$\text{Hasil (Rata-rata Final): } H_{\text{TP}_i} = \frac{T_{1, \text{TP}_i} + T_{2, \text{TP}_i}}{2}$$
                 </div>
             </div>
         </div>
@@ -535,11 +537,9 @@
         tbody.innerHTML = '';
         
         for (let i = 1; i <= jumlahSlag; i++) {
-            // Urutan Target: P1-P2, P2-P3, ... , P(N)-P1
             let targetBelakang = `P${i}`;
             let targetMuka = (i === jumlahSlag) ? `P1` : `P${i + 1}`;
             
-            // Baris 1: Belakang (Posisi I & Posisi II diisi Belakang dulu)
             let row1 = `
             <tr id="row_${i}_1">
                 <td rowspan="2"><input type="text" value="TP${i}" id="p_${i}"></td>
@@ -563,11 +563,12 @@
                 <td rowspan="2" class="calc-out" id="beda_pos2_${i}">-</td>
                 <td rowspan="2" class="calc-out" id="rata_rata_${i}">-</td>
                 <td rowspan="2" class="calc-out" id="koreksi_${i}">-</td>
-                <td rowspan="2" class="calc-out" id="tinggi_titik_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="tinggi_titik1_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="tinggi_titik2_${i}">-</td>
+                <td rowspan="2" class="calc-out" id="hasil_final_${i}">-</td>
                 <td rowspan="2"><input type="text" placeholder="Sket"></td>
             </tr>`;
 
-            // Baris 2: Muka (Posisi I & Posisi II diisi Muka setelah Belakang)
             let row2 = `
             <tr id="row_${i}_2">
                 <td><input type="text" value="${targetMuka}" id="t_${i}_m"></td>
@@ -587,12 +588,11 @@
                 <td><input type="number" placeholder="BB" id="bb_pos2_m_${i}" oninput="prosesKalkulasiTabel()"></td>
             </tr>`;
 
-            // Baris 3: Jarak Rata-Rata
             let row3 = `
             <tr id="row_${i}_3" class="row-jarak-rata">
                 <td colspan="8" class="label-jarak-rata">Jarak Rata-rata (m):</td>
                 <td class="val-jarak-rata" id="jarak_rata_${i}">-</td>
-                <td colspan="10" style="background: #e8f8ed;">-</td>
+                <td colspan="12" style="background: #e8f8ed;">-</td>
             </tr>`;
 
             tbody.innerHTML += (row1 + row2 + row3);
@@ -604,11 +604,12 @@
     function prosesKalkulasiTabel() {
         let elevasiInput = document.getElementById('elevasi_awal').value;
         let elevasiAwal = elevasiInput !== "" ? parseFloat(elevasiInput) : null;
-        let elevasiBerjalan = elevasiAwal;
 
         let totalRataRata = 0;
         let countSlagValid = 0;
         let dataRata = [];
+        let dataBeda1 = [];
+        let dataBeda2 = [];
         let proofText = "";
 
         proofText += `<div style="margin-bottom:15px;"><b>1. Status Elevasi Awal:</b><br>`;
@@ -683,11 +684,15 @@
                 totalRataRata += rata;
                 countSlagValid++;
                 dataRata[i] = rata;
+                dataBeda1[i] = beda1;
+                dataBeda2[i] = beda2;
             } else {
                 document.getElementById(`beda_pos1_${i}`).innerText = "-";
                 document.getElementById(`beda_pos2_${i}`).innerText = "-";
                 document.getElementById(`rata_rata_${i}`).innerText = "-";
                 dataRata[i] = null;
+                dataBeda1[i] = null;
+                dataBeda2[i] = null;
             }
         }
 
@@ -698,27 +703,61 @@
         proofText += `$$\\text{Jumlah Slag} = \\mathbf{${countSlagValid} \\text{ Slag}}$$`;
         proofText += `$$\\text{Koreksi} = \\frac{${formatAngka(totalRataRata)} \\times -1}{${countSlagValid || 1}} = \\mathbf{${formatAngka(koreksiPerSlag)} \\text{ m}}$$`;
 
-        proofText += `<br><b>4. Akumulasi Tinggi Titik:</b><br>`;
+        proofText += `<br><b>4. Akumulasi Beruntun Tinggi Titik 1, Tinggi Titik 2, & Hasil Final:</b><br>`;
 
-        for (let i = 1; i <= jumlahSlag; i++) {
-            if (dataRata[i] !== null) {
-                let koreksi = koreksiPerSlag;
-                document.getElementById(`koreksi_${i}`).innerText = formatAngka(koreksi);
+        let tinggiPos1 = [];
+        let tinggiPos2 = [];
+        let tinggiFinal = [];
 
-                if (elevasiBerjalan !== null) {
-                    let elevSebelumnya = elevasiBerjalan;
-                    elevasiBerjalan = elevasiBerjalan + dataRata[i] + koreksi;
-                    document.getElementById(`tinggi_titik_${i}`).innerText = formatAngka(elevasiBerjalan);
-                    
-                    proofText += `$$\\text{Tinggi Titik }_{${i}} = ${formatAngka(elevSebelumnya)} + (${formatAngka(dataRata[i])}) + (${formatAngka(koreksi)}) = \\mathbf{${formatAngka(elevasiBerjalan)} \\text{ m}}$$`;
-                } else {
-                    document.getElementById(`tinggi_titik_${i}`).innerText = "-";
-                    proofText += `$$\\text{Tinggi Titik }_{${i}} = \\text{Elevasi Awal Belum Ditetapkan}$$`;
-                }
-            } else {
-                document.getElementById(`koreksi_${i}`).innerText = "-";
-                document.getElementById(`tinggi_titik_${i}`).innerText = "-";
+        if (elevasiAwal !== null && countSlagValid === jumlahSlag) {
+            // --- ALUR 1: TINGGI TITIK 1 (POSISI I BERUNTUN KEBAWAH: TP1 -> TP Max) ---
+            let elevBerjalanPos1 = elevasiAwal;
+            for (let i = 1; i <= jumlahSlag; i++) {
+                let prev = elevBerjalanPos1;
+                elevBerjalanPos1 = prev + dataBeda1[i] + dataRata[i] + koreksiPerSlag;
+                tinggiPos1[i] = elevBerjalanPos1;
+
+                proofText += `$$\\text{Tinggi Titik 1 (Pos I Kebawah) TP}_{${i}} = ${formatAngka(prev)} + (${formatAngka(dataBeda1[i])}) + (${formatAngka(dataRata[i])}) + (${formatAngka(koreksiPerSlag)}) = \\mathbf{${formatAngka(tinggiPos1[i])} \\text{ m}}$$`;
             }
+
+            // --- ALUR 2: TINGGI TITIK 2 (POSISI II BERUNTUN KEATAS: TP Max -> TP1) ---
+            let elevBerjalanPos2 = tinggiPos1[jumlahSlag];
+            tinggiPos2[jumlahSlag] = elevBerjalanPos2;
+
+            proofText += `<br><i>[Mulai Beruntun Ke Atas dari TP${jumlahSlag}]</i><br>`;
+            proofText += `$$\\text{Tinggi Titik 2 (Pos II Keatas) TP}_{${jumlahSlag}} = \\mathbf{${formatAngka(tinggiPos2[jumlahSlag])} \\text{ m}}$$`;
+
+            for (let i = jumlahSlag - 1; i >= 1; i--) {
+                let nextVal = tinggiPos2[i + 1];
+                tinggiPos2[i] = nextVal + dataBeda2[i] + dataRata[i] + koreksiPerSlag;
+
+                proofText += `$$\\text{Tinggi Titik 2 (Pos II Keatas) TP}_{${i}} = ${formatAngka(nextVal)} + (${formatAngka(dataBeda2[i])}) + (${formatAngka(dataRata[i])}) + (${formatAngka(koreksiPerSlag)}) = \\mathbf{${formatAngka(tinggiPos2[i])} \\text{ m}}$$`;
+            }
+
+            // --- PENJUMLAHAN & RATA-RATA AKHIR (HASIL) ---
+            proofText += `<br><i>[Hasil Rata-rata / Kombinasi Posisi I & Posisi II]</i><br>`;
+            for (let i = 1; i <= jumlahSlag; i++) {
+                tinggiFinal[i] = (tinggiPos1[i] + tinggiPos2[i]) / 2;
+                
+                document.getElementById(`koreksi_${i}`).innerText = formatAngka(koreksiPerSlag);
+                document.getElementById(`tinggi_titik1_${i}`).innerText = formatAngka(tinggiPos1[i]);
+                document.getElementById(`tinggi_titik2_${i}`).innerText = formatAngka(tinggiPos2[i]);
+                document.getElementById(`hasil_final_${i}`).innerText = formatAngka(tinggiFinal[i]);
+
+                proofText += `$$\\text{Hasil Final TP}_{${i}} = \\frac{${formatAngka(tinggiPos1[i])} + ${formatAngka(tinggiPos2[i])}}{2} = \\mathbf{${formatAngka(tinggiFinal[i])} \\text{ m}}$$`;
+            }
+        } else {
+            for (let i = 1; i <= jumlahSlag; i++) {
+                if (dataRata[i] !== null) {
+                    document.getElementById(`koreksi_${i}`).innerText = formatAngka(koreksiPerSlag);
+                } else {
+                    document.getElementById(`koreksi_${i}`).innerText = "-";
+                }
+                document.getElementById(`tinggi_titik1_${i}`).innerText = "-";
+                document.getElementById(`tinggi_titik2_${i}`).innerText = "-";
+                document.getElementById(`hasil_final_${i}`).innerText = "-";
+            }
+            proofText += `<span style="color:red;"><i>[!] Lengkapi seluruh pembacaan benang dan Elevasi Awal untuk kalkulasi beruntun lengkap.</i></span>`;
         }
 
         let proofLogEl = document.getElementById('proofLog');
