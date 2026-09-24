@@ -213,12 +213,21 @@
             text-align: center;
             font-size: 11px;
             box-sizing: border-box;
+            transition: all 0.3s;
         }
 
         table.survey-table input:focus {
             border-color: var(--secondary-color);
             outline: none;
             background-color: #fffde7;
+        }
+
+        /* Class untuk menyorot selisih benang yang salah (merah) */
+        .error-benang {
+            background-color: #ffcdd2 !important;
+            border-color: #d32f2f !important;
+            color: #b71c1c !important;
+            font-weight: bold;
         }
 
         .calc-out {
@@ -601,6 +610,34 @@
         prosesKalkulasiTabel();
     }
 
+    // Fungsi Tambahan untuk Cek Toleransi Benang 0.003
+    function cekToleransiBenang(ba, bt, bb, id_ba, id_bt, id_bb) {
+        let el_ba = document.getElementById(id_ba);
+        let el_bt = document.getElementById(id_bt);
+        let el_bb = document.getElementById(id_bb);
+        
+        if (el_ba && el_bt && el_bb && !isNaN(ba) && !isNaN(bt) && !isNaN(bb)) {
+            // Kontrol (BA+BB)-2BT = selisih (harus <= 3mm atau 0.003m)
+            let selisih = Math.abs((ba + bb) - (2 * bt));
+            // Toleransi adaptif jika input dlm mm (>100) atau meter (<100)
+            let batasToleransi = (ba > 100 || bt > 100 || bb > 100) ? 3.01 : 0.0031; 
+
+            if (selisih > batasToleransi) {
+                el_ba.classList.add('error-benang');
+                el_bt.classList.add('error-benang');
+                el_bb.classList.add('error-benang');
+            } else {
+                el_ba.classList.remove('error-benang');
+                el_bt.classList.remove('error-benang');
+                el_bb.classList.remove('error-benang');
+            }
+        } else {
+            if(el_ba) el_ba.classList.remove('error-benang');
+            if(el_bt) el_bt.classList.remove('error-benang');
+            if(el_bb) el_bb.classList.remove('error-benang');
+        }
+    }
+
     function prosesKalkulasiTabel() {
         let elevasiInput = document.getElementById('elevasi_awal').value;
         let elevasiAwal = elevasiInput !== "" ? parseFloat(elevasiInput) : null;
@@ -637,6 +674,12 @@
             let ba2_m = parseFloat(document.getElementById(`ba_pos2_m_${i}`)?.value);
             let bb2_m = parseFloat(document.getElementById(`bb_pos2_m_${i}`)?.value);
             let bt2_m = parseFloat(document.getElementById(`bt_pos2_m_${i}`)?.value);
+
+            // Eksekusi Pengecekan Toleransi Benang
+            cekToleransiBenang(ba1_b, bt1_b, bb1_b, `ba_pos1_b_${i}`, `bt_pos1_b_${i}`, `bb_pos1_b_${i}`);
+            cekToleransiBenang(ba1_m, bt1_m, bb1_m, `ba_pos1_m_${i}`, `bt_pos1_m_${i}`, `bb_pos1_m_${i}`);
+            cekToleransiBenang(ba2_b, bt2_b, bb2_b, `ba_pos2_b_${i}`, `bt_pos2_b_${i}`, `bb_pos2_b_${i}`);
+            cekToleransiBenang(ba2_m, bt2_m, bb2_m, `ba_pos2_m_${i}`, `bt_pos2_m_${i}`, `bb_pos2_m_${i}`);
 
             let d1_b = (!isNaN(ba1_b) && !isNaN(bb1_b)) ? ((ba1_b - bb1_b) * 100) / 1000 : null;
             let d1_m = (!isNaN(ba1_m) && !isNaN(bb1_m)) ? ((ba1_m - bb1_m) * 100) / 1000 : null;
