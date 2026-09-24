@@ -818,12 +818,29 @@
         const originalTable = document.getElementById('tabel-waterpass-pp');
         const clonedTable = originalTable.cloneNode(true);
         
-        const inputs = clonedTable.querySelectorAll('input');
-        inputs.forEach(input => {
-            const val = input.getAttribute('value') || input.value || '';
-            const textNode = document.createTextNode(val + '\n');
-            input.parentNode.insertBefore(textNode, input);
-            input.remove();
+        // Memproses kontainer stack-input agar BA, BT, BB tersusun vertikal ke bawah dengan tag <br>
+        const stackInputs = clonedTable.querySelectorAll('.stack-input');
+        stackInputs.forEach(stack => {
+            const inputs = stack.querySelectorAll('input');
+            const vals = [];
+            inputs.forEach(input => {
+                const val = input.value || input.getAttribute('value') || '';
+                if (val.trim() !== '') {
+                    vals.push(val.trim());
+                }
+            });
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = vals.join('<br>');
+            stack.parentNode.replaceChild(wrapper, stack);
+        });
+
+        // Memproses input opsional lainnya (Target, Sket, dll.)
+        const remainingInputs = clonedTable.querySelectorAll('input');
+        remainingInputs.forEach(input => {
+            const val = input.value || input.getAttribute('value') || '';
+            const span = document.createElement('span');
+            span.textContent = val;
+            input.parentNode.replaceChild(span, input);
         });
 
         doc.autoTable({
