@@ -254,7 +254,7 @@
                     <div>
                         <div class="input-group">
                             <label for="pp_elevasi_awal">Set Elevasi Awal (meter):</label>
-                            <input type="number" id="pp_elevasi_awal" placeholder="Contoh: 100.000" step="any" oninput="pp_calculateAll()">
+                            <input type="number" id="pp_elevasi_awal" placeholder="Contoh: 100.000" step="any" oninput="if(document.getElementById('pp_elevasi_awal_tabel')){document.getElementById('pp_elevasi_awal_tabel').value = this.value; document.getElementById('pp_elevasi_awal_tabel').setAttribute('value', this.value);} pp_calculateAll();">
                         </div>
                         <br>
                         <div class="input-group" style="background:#fff; padding:15px; border-radius:8px; border:2px solid var(--accent-color); text-align:center;">
@@ -322,7 +322,7 @@
                     </div>
                     <div class="input-group">
                         <label for="ds_elevasi_awal">Elevasi Awal (meter):</label>
-                        <input type="number" id="ds_elevasi_awal" placeholder="Contoh: 100.000" step="any" oninput="ds_prosesKalkulasiTabel()">
+                        <input type="number" id="ds_elevasi_awal" placeholder="Contoh: 100.000" step="any" oninput="if(document.getElementById('ds_elevasi_awal_tabel')){document.getElementById('ds_elevasi_awal_tabel').value = this.value; document.getElementById('ds_elevasi_awal_tabel').setAttribute('value', this.value);} ds_prosesKalkulasiTabel();">
                     </div>
                     <div class="input-group" style="display:flex; align-items:center; justify-content:center;">
                         <span id="ds_display_target" style="font-weight:bold; color:var(--primary-color);">Target/Slag Otomatis: 4 Slag</span>
@@ -462,6 +462,18 @@
         let totalSlag = parseInt(document.querySelector('input[name="pp_tp_option"]:checked').value);
         let tbody = document.getElementById('pp_table_body');
         tbody.innerHTML = '';
+        
+        let currentElev = document.getElementById('pp_elevasi_awal_tabel') ? document.getElementById('pp_elevasi_awal_tabel').value : (document.getElementById('pp_elevasi_awal').value || "");
+        
+        // Baris Khusus Elevasi Awal (Ditampilkan di PDF)
+        let elevRow = `
+        <tr>
+            <td colspan="11" style="text-align:right; font-weight:bold; background:#fff3e0; color:#e65100;">ELEVASI AWAL P1 (m) :</td>
+            <td style="background:#fff3e0;"><input type="number" id="pp_elevasi_awal_tabel" style="font-weight:bold; color:#e65100; background:transparent; border:none; text-align:center; width:100%;" value="${currentElev}" placeholder="Input Elevasi..." oninput="document.getElementById('pp_elevasi_awal').value = this.value; this.setAttribute('value', this.value); pp_calculateAll();"></td>
+            <td style="background:#fff3e0;"></td>
+        </tr>
+        `;
+        tbody.innerHTML += elevRow;
 
         for (let i = 1; i <= totalSlag; i++) {
             let tp = `TP${i}`, targetB = `P${i}`, targetM = (i === totalSlag) ? `P1` : `P${i + 1}`; 
@@ -494,6 +506,21 @@
             `;
             tbody.innerHTML += row1 + row2;
         }
+
+        // Baris Khusus Kesimpulan (Total)
+        let totalRow = `
+        <tr style="background:#e8f5e9; font-weight:bold;">
+            <td colspan="6" style="text-align:right; color:var(--primary-color);">TOTAL KESIMPULAN :</td>
+            <td id="pp_tot_jarak" style="color:var(--primary-color);">-</td>
+            <td id="pp_tot_dh_pergi" style="color:var(--primary-color);">-</td>
+            <td id="pp_tot_dh_pulang" style="color:var(--primary-color);">-</td>
+            <td id="pp_tot_dh_rata" style="color:var(--primary-color);">-</td>
+            <td id="pp_tot_koreksi" style="color:var(--primary-color);">-</td>
+            <td colspan="2"></td>
+        </tr>
+        `;
+        tbody.innerHTML += totalRow;
+
         pp_calculateAll();
     }
 
@@ -503,6 +530,7 @@
         document.getElementById('pp_display_elevasi_awal').innerText = elevAwal !== null ? formatAngka(elevAwal) + " m" : "-";
 
         let totalDhRata = 0, validSlag = 0, dataDh = [];
+        let sumJarak = 0, sumDhPergi = 0, sumDhPulang = 0;
 
         for (let i = 1; i <= totalSlag; i++) {
             let baPB = pp_normalize(document.getElementById(`pp_ba_pergi_blk_${i}`)?.value);
@@ -540,6 +568,9 @@
             
             dataDh[i] = dhRata;
             if (dhRata !== null) { totalDhRata += dhRata; validSlag++; }
+            if (dRata) sumJarak += dRata;
+            if (dhPergi !== null) sumDhPergi += dhPergi;
+            if (dhPulang !== null) sumDhPulang += dhPulang;
         }
 
         let koreksi = validSlag > 0 ? (totalDhRata / validSlag) * -1 : 0;
@@ -554,6 +585,13 @@
                 if(document.getElementById(`pp_elevasi_${i}`)) document.getElementById(`pp_elevasi_${i}`).innerText = "-";
             }
         }
+
+        // Tampilkan Hasil Total Kesimpulan
+        if(document.getElementById('pp_tot_jarak')) document.getElementById('pp_tot_jarak').innerText = sumJarak > 0 ? formatAngka(sumJarak) : "-";
+        if(document.getElementById('pp_tot_dh_pergi')) document.getElementById('pp_tot_dh_pergi').innerText = sumDhPergi !== 0 ? formatAngka(sumDhPergi) : "-";
+        if(document.getElementById('pp_tot_dh_pulang')) document.getElementById('pp_tot_dh_pulang').innerText = sumDhPulang !== 0 ? formatAngka(sumDhPulang) : "-";
+        if(document.getElementById('pp_tot_dh_rata')) document.getElementById('pp_tot_dh_rata').innerText = totalDhRata !== 0 ? formatAngka(totalDhRata) : "-";
+        if(document.getElementById('pp_tot_koreksi')) document.getElementById('pp_tot_koreksi').innerText = validSlag > 0 ? formatAngka(koreksi * validSlag) : "-";
     }
 
     /* ==========================================================================
@@ -575,6 +613,18 @@
         if (!tbody) return;
         tbody.innerHTML = '';
         
+        let currentElev = document.getElementById('ds_elevasi_awal_tabel') ? document.getElementById('ds_elevasi_awal_tabel').value : (document.getElementById('ds_elevasi_awal').value || "");
+        
+        // Baris Khusus Elevasi Awal untuk Cetak PDF (Spans disesuaikan jumlah kolom = 23)
+        let elevRow = `
+        <tr>
+            <td colspan="19" style="text-align:right; font-weight:bold; background:#fff3e0; color:#e65100;">ELEVASI AWAL P1 (m) :</td>
+            <td colspan="3" style="background:#fff3e0;"><input type="number" id="ds_elevasi_awal_tabel" style="font-weight:bold; color:#e65100; background:transparent; border:none; text-align:center; width:100%;" value="${currentElev}" placeholder="Input Elevasi..." oninput="document.getElementById('ds_elevasi_awal').value = this.value; this.setAttribute('value', this.value); ds_prosesKalkulasiTabel();"></td>
+            <td style="background:#fff3e0;"></td>
+        </tr>
+        `;
+        tbody.innerHTML += elevRow;
+
         for (let i = 1; i <= ds_jumlahSlag; i++) {
             let targetBelakang = `P${i}`;
             let targetMuka = (i === ds_jumlahSlag) ? `P1` : `P${i + 1}`;
@@ -636,6 +686,22 @@
 
             tbody.innerHTML += (row1 + row2 + row3);
         }
+
+        // Baris Khusus Kesimpulan (Total)
+        let totalRow = `
+        <tr style="background:#e8f5e9; font-weight:bold;">
+            <td colspan="8" style="text-align:right; color:var(--primary-color);">TOTAL KESIMPULAN :</td>
+            <td id="ds_tot_jarak" style="color:var(--primary-color);">-</td>
+            <td colspan="6"></td>
+            <td id="ds_tot_beda1" style="color:var(--primary-color);">-</td>
+            <td id="ds_tot_beda2" style="color:var(--primary-color);">-</td>
+            <td id="ds_tot_rata" style="color:var(--primary-color);">-</td>
+            <td id="ds_tot_koreksi" style="color:var(--primary-color);">-</td>
+            <td colspan="4"></td>
+        </tr>
+        `;
+        tbody.innerHTML += totalRow;
+
         ds_prosesKalkulasiTabel();
     }
 
@@ -668,11 +734,9 @@
         let elevasiInput = document.getElementById('ds_elevasi_awal') ? document.getElementById('ds_elevasi_awal').value : "";
         let elevasiAwal = elevasiInput !== "" ? parseFloat(elevasiInput) : null;
 
-        let totalRataRata = 0;
-        let countSlagValid = 0;
-        let dataRata = [];
-        let dataBeda1 = [];
-        let dataBeda2 = [];
+        let totalRataRata = 0, countSlagValid = 0;
+        let sumJarak = 0, sumBeda1 = 0, sumBeda2 = 0;
+        let dataRata = [], dataBeda1 = [], dataBeda2 = [];
         let proofText = "";
 
         proofText += `<div style="margin-bottom:12px;"><b>1. Status Elevasi Awal:</b><br>`;
@@ -726,6 +790,7 @@
             if(document.getElementById(`ds_jarak_pergi_${i}`)) document.getElementById(`ds_jarak_pergi_${i}`).innerText = formatAngka(jarakPergi);
             if(document.getElementById(`ds_jarak_pulang_${i}`)) document.getElementById(`ds_jarak_pulang_${i}`).innerText = formatAngka(jarakPulang);
             if(document.getElementById(`ds_jarak_rata_${i}`)) document.getElementById(`ds_jarak_rata_${i}`).innerText = formatAngka(jarakRata);
+            if (jarakRata !== null) sumJarak += jarakRata;
 
             if (!isNaN(bt1_b) && !isNaN(bt1_m)) {
                 let beda1 = (bt1_b - bt1_m) / 1000;
@@ -744,6 +809,8 @@
                 proofText += `$\\text{Rata-rata Beda Tinggi} = \\mathbf{${formatAngka(rata)} \\text{ m}}$</div>`;
 
                 totalRataRata += rata;
+                sumBeda1 += beda1;
+                sumBeda2 += beda2;
                 countSlagValid++;
                 dataRata[i] = rata;
                 dataBeda1[i] = beda1;
@@ -763,9 +830,7 @@
         proofText += `<br><b>3. Rekapitulasi & Koreksi Slag:</b><br>`;
         proofText += `$\\text{Jumlah Rata-rata} = \\mathbf{${formatAngka(totalRataRata)} \\text{ m}}, \\quad \\text{Koreksi/Slag} = \\mathbf{${formatAngka(koreksiPerSlag)} \\text{ m}}$`;
 
-        let tinggiPos1 = [];
-        let tinggiPos2 = [];
-        let tinggiFinal = [];
+        let tinggiPos1 = [], tinggiPos2 = [], tinggiFinal = [];
 
         if (elevasiAwal !== null && countSlagValid === ds_jumlahSlag) {
             let elevBerjalanPos1 = elevasiAwal;
@@ -799,6 +864,13 @@
             }
         }
 
+        // Menampilkan Total di baris paling bawah
+        if(document.getElementById('ds_tot_jarak')) document.getElementById('ds_tot_jarak').innerText = sumJarak > 0 ? formatAngka(sumJarak) : "-";
+        if(document.getElementById('ds_tot_beda1')) document.getElementById('ds_tot_beda1').innerText = sumBeda1 !== 0 ? formatAngka(sumBeda1) : "-";
+        if(document.getElementById('ds_tot_beda2')) document.getElementById('ds_tot_beda2').innerText = sumBeda2 !== 0 ? formatAngka(sumBeda2) : "-";
+        if(document.getElementById('ds_tot_rata')) document.getElementById('ds_tot_rata').innerText = totalRataRata !== 0 ? formatAngka(totalRataRata) : "-";
+        if(document.getElementById('ds_tot_koreksi')) document.getElementById('ds_tot_koreksi').innerText = countSlagValid > 0 ? formatAngka(koreksiPerSlag * countSlagValid) : "-";
+
         let proofLogEl = document.getElementById('ds_proofLog');
         if (proofLogEl) {
             proofLogEl.innerHTML = proofText;
@@ -818,7 +890,6 @@
         const originalTable = document.getElementById('tabel-waterpass-pp');
         const clonedTable = originalTable.cloneNode(true);
         
-        // Memproses kontainer stack-input agar BA, BT, BB tersusun vertikal ke bawah dengan tag <br>
         const stackInputs = clonedTable.querySelectorAll('.stack-input');
         stackInputs.forEach(stack => {
             const inputs = stack.querySelectorAll('input');
@@ -834,7 +905,6 @@
             stack.parentNode.replaceChild(wrapper, stack);
         });
 
-        // Memproses input opsional lainnya (Target, Sket, dll.)
         const remainingInputs = clonedTable.querySelectorAll('input');
         remainingInputs.forEach(input => {
             const val = input.value || input.getAttribute('value') || '';
