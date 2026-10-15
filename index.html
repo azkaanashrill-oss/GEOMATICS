@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+</body>
+</html><!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -105,16 +116,16 @@
         .side-panel-info h4 { font-size: 20px; color: var(--primary-color); letter-spacing: 1px; }
         .side-panel-info p { font-size: 12px; color: var(--text-sub); margin-top: 5px;}
 
-        .tab-nav-vertical { display: flex; flex-direction: column; gap: 12px; }
+        .tab-nav-vertical { display: flex; flex-direction: column; gap: 10px; }
 
         .tab-btn {
-            padding: 14px 18px;
+            padding: 12px 15px;
             background: #ffffff;
             color: var(--primary-color);
             border: 2px solid #c8e6c9;
             border-radius: 8px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -146,7 +157,7 @@
 
         .setting-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;
-            background: #f1f8f1; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #c8e6c9;
+            background: #f1f8f1; padding: 20px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #c8e6c9;
         }
 
         .input-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
@@ -157,16 +168,38 @@
 
         .btn-primary, .btn-pdf {
             width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none;
-            border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+            border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-bottom: 10px;
         }
         .btn-primary:hover { background-color: #123e15; }
-        .btn-pdf { background-color: #2c3e50; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-pdf { background-color: #2c3e50; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-pdf:hover { background-color: #1a252f; }
 
-        .radio-list { display: flex; flex-direction: column; gap: 8px; background: #fff; padding: 12px; border-radius: 8px; border: 1px solid #a5d6a7; max-height: 200px; overflow-y: auto; }
-        .radio-item { display: flex; justify-content: space-between; padding: 6px 10px; border-bottom: 1px dashed #e0e0e0; font-size: 13px; color: var(--primary-color); font-weight: 600; cursor: pointer;}
-        .radio-item:hover { background: #f1f8e9; }
-        .radio-item input[type="radio"] { accent-color: #d81b60; width: 16px; height: 16px; cursor: pointer; }
+        .slag-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #a5d6a7;
+        }
+
+        .slag-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .slag-btn:hover { background-color: #123e15; }
 
         .table-responsive { overflow-x: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #bdbdbd; background: #fff; }
         
@@ -174,11 +207,21 @@
         table.survey-table th, table.survey-table td { border: 1px solid #9e9e9e; padding: 4px 2px; vertical-align: middle; }
         table.survey-table th { background-color: var(--primary-color); color: #ffffff; font-weight: 600; }
         table.survey-table input { width: 100%; padding: 4px 2px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 11px; }
+
+        table.survey-table-bw { 
+            width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; min-width: 1200px; 
+            background: #fff; color: #000; border: 2px solid #000;
+        }
+        table.survey-table-bw th, table.survey-table-bw td { border: 1px solid #000; padding: 4px 2px; vertical-align: middle; }
+        table.survey-table-bw th { background-color: #fff; color: #000; font-weight: bold; }
+        table.survey-table-bw input { width: 100%; padding: 4px 2px; border: 1px solid transparent; border-radius: 4px; text-align: center; font-size: 11px; color: #000; background: transparent; }
+        table.survey-table-bw input:focus { border: 1px solid #000; outline: none; background: #f0f0f0; }
+        .bw-calc-out, .bw-final-val { font-weight: bold; color: #000; }
+        .spacer-row td { background-color: #f5f5f5; height: 12px; border-left: 1px solid #000; border-right: 1px solid #000; }
         
         .stack-input { display: flex; flex-direction: column; gap: 3px; align-items: center; padding: 2px 0; }
         .stack-input input { width: 75px !important; }
         
-        .error-thread input, .error-benang { background-color: #ffebee !important; border-color: #d32f2f !important; color: #b71c1c !important; font-weight: bold; }
         .empty-cell { background-color: #f5f5f5; }
         .readonly-val, .calc-out { font-weight: bold; color: var(--primary-color); background-color: #f1f8e9; }
         .final-val { font-weight: bold; color: #e65100; background-color: #fff3e0; }
@@ -214,15 +257,15 @@
                 <div class="setting-grid">
                     <div class="input-group">
                         <label>Benang Atas (BA)</label>
-                        <input type="number" id="input_ba" placeholder="Kosongkan jika dicari...">
+                        <input type="number" id="input_ba" placeholder="Kosongkan jika dicari..." step="any">
                     </div>
                     <div class="input-group">
                         <label>Benang Tengah (BT)</label>
-                        <input type="number" id="input_bt" placeholder="Kosongkan jika dicari...">
+                        <input type="number" id="input_bt" placeholder="Kosongkan jika dicari..." step="any">
                     </div>
                     <div class="input-group">
                         <label>Benang Bawah (BB)</label>
-                        <input type="number" id="input_bb" placeholder="Kosongkan jika dicari...">
+                        <input type="number" id="input_bb" placeholder="Kosongkan jika dicari..." step="any">
                     </div>
                 </div>
                 <button class="btn-primary" onclick="hitungPemetaanTunggal()">HITUNG BENANG TUNGGAL</button>
@@ -239,16 +282,11 @@
 
                 <div class="setting-grid">
                     <div>
-                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Pilih Jumlah Slag / Stand:</label>
-                        <div class="radio-list">
-                            <label class="radio-item">1 Stand (TP1: P1–P1) <input type="radio" name="pp_tp_option" value="1" onchange="pp_generateTable()"></label>
-                            <label class="radio-item">2 Stand (TP1–TP2) <input type="radio" name="pp_tp_option" value="2" onchange="pp_generateTable()"></label>
-                            <label class="radio-item">3 Stand (TP1–TP3) <input type="radio" name="pp_tp_option" value="3" onchange="pp_generateTable()"></label>
-                            <label class="radio-item">4 Stand (TP1–TP4) <input type="radio" name="pp_tp_option" value="4" checked onchange="pp_generateTable()"></label>
-                            <label class="radio-item">5 Stand (TP1–TP5) <input type="radio" name="pp_tp_option" value="5" onchange="pp_generateTable()"></label>
-                            <label class="radio-item">6 Stand (TP1–TP6) <input type="radio" name="pp_tp_option" value="6" onchange="pp_generateTable()"></label>
-                            <label class="radio-item">7 Stand (TP1–TP7) <input type="radio" name="pp_tp_option" value="7" onchange="pp_generateTable()"></label>
-                            <label class="radio-item">8 Stand (TP1–TP8) <input type="radio" name="pp_tp_option" value="8" onchange="pp_generateTable()"></label>
+                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Slag / Stand (Unlimited):</label>
+                        <div class="slag-controls">
+                            <button class="slag-btn" onclick="pp_ubahSlag(-1)">-</button>
+                            <span id="pp_slag_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">4 Slag</span>
+                            <button class="slag-btn" onclick="pp_ubahSlag(1)">+</button>
                         </div>
                     </div>
                     <div>
@@ -264,8 +302,9 @@
                     </div>
                 </div>
 
+                <button class="btn-primary" onclick="pp_calculateAll()">HITUNG PERGI PULANG</button>
                 <button class="btn-pdf" onclick="downloadPDF_PP()">
-                    📄 Download Tabel Pergi-Pulang PDF (Format Standar)
+                    📄 Download Tabel Pergi-Pulang PDF (Format F4 Landscape)
                 </button>
 
                 <div class="table-responsive">
@@ -307,30 +346,23 @@
             <div id="tab-ds" class="tab-content">
                 <h3 class="section-title">👥 Pengukuran Waterpass Double Stand</h3>
                 <div class="setting-grid">
-                    <div class="input-group">
-                        <label for="ds_select_pesawat">Pilih Jumlah Stand / Slag:</label>
-                        <select id="ds_select_pesawat" onchange="ds_updateKonfigurasiSlag()">
-                            <option value="1">1 Stand / Slag</option>
-                            <option value="2">2 Stand / Slag</option>
-                            <option value="3">3 Stand / Slag</option>
-                            <option value="4" selected>4 Stand / Slag</option>
-                            <option value="5">5 Stand / Slag</option>
-                            <option value="6">6 Stand / Slag</option>
-                            <option value="7">7 Stand / Slag</option>
-                            <option value="8">8 Stand / Slag</option>
-                        </select>
+                    <div>
+                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Slag / Stand (Unlimited):</label>
+                        <div class="slag-controls">
+                            <button class="slag-btn" onclick="ds_ubahSlag(-1)">-</button>
+                            <span id="ds_slag_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">4 Slag</span>
+                            <button class="slag-btn" onclick="ds_ubahSlag(1)">+</button>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label for="ds_elevasi_awal">Elevasi Awal (meter):</label>
                         <input type="number" id="ds_elevasi_awal" placeholder="Contoh: 100.000" step="any" oninput="if(document.getElementById('ds_elevasi_awal_tabel')){document.getElementById('ds_elevasi_awal_tabel').value = this.value; document.getElementById('ds_elevasi_awal_tabel').setAttribute('value', this.value);} ds_prosesKalkulasiTabel();">
                     </div>
-                    <div class="input-group" style="display:flex; align-items:center; justify-content:center;">
-                        <span id="ds_display_target" style="font-weight:bold; color:var(--primary-color);">Target/Slag Otomatis: 4 Slag</span>
-                    </div>
                 </div>
 
+                <button class="btn-primary" onclick="ds_prosesKalkulasiTabel()">HITUNG DOUBLE STAND</button>
                 <button class="btn-pdf" onclick="downloadPDF_DS()">
-                    📄 Download Tabel Double Stand PDF (Format Standar B&W)
+                    📄 Download Tabel Double Stand PDF (Format F4 Landscape)
                 </button>
 
                 <div class="table-responsive">
@@ -378,6 +410,112 @@
                 </div>
             </div>
 
+            <!-- TAB 4: PROFIL MEMANJANG -->
+            <div id="tab-memanjang" class="tab-content">
+                <h3 class="section-title">📏 Pengukuran Profil Memanjang (Mode Lapangan B&W)</h3>
+                <div class="setting-grid">
+                    <div>
+                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Slag (Unlimited):</label>
+                        <div class="slag-controls">
+                            <button class="slag-btn" onclick="pm_ubahSlag(-1)">-</button>
+                            <span id="pm_slag_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">3 Slag</span>
+                            <button class="slag-btn" onclick="pm_ubahSlag(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="pm_elevasi_awal">Elevasi Awal Patok (m):</label>
+                        <input type="number" id="pm_elevasi_awal" placeholder="Contoh: 18.230" step="any" oninput="pm_hitung()">
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="pm_hitung()">HITUNG PROFIL MEMANJANG</button>
+                <button class="btn-pdf" onclick="downloadPDF_PM()">
+                    📄 Download Tabel Profil Memanjang PDF (Format F4 Portrait)
+                </button>
+
+                <div class="table-responsive">
+                    <table id="tabel-profil-memanjang" class="survey-table-bw" border="1">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Tempat<br>Pesawat</th>
+                                <th rowspan="2">No Titik</th>
+                                <th colspan="3">Pembacaan Baak</th>
+                                <th colspan="2">Jarak (M)</th>
+                                <th rowspan="2">Beda Tinggi<br>&#916;H</th>
+                                <th rowspan="2">Koreksi (C)</th>
+                                <th colspan="2">Ketinggian</th>
+                                <th rowspan="2">Ket</th>
+                            </tr>
+                            <tr>
+                                <th>Belakang</th>
+                                <th>BT - Detail</th>
+                                <th>Muka</th>
+                                <th>Pesawat</th>
+                                <th>Titik</th>
+                                <th>Patok</th>
+                                <th>Tanah</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pm_tbody">
+                            <!-- Diisi JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 5: PROFIL MELINTANG -->
+            <div id="tab-melintang" class="tab-content">
+                <h3 class="section-title">📐 Pengukuran Profil Melintang (Mode Lapangan B&W)</h3>
+                <div class="setting-grid">
+                    <div>
+                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Slag (Unlimited):</label>
+                        <div class="slag-controls">
+                            <button class="slag-btn" onclick="ml_ubahSlag(-1)">-</button>
+                            <span id="ml_slag_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">5 Slag</span>
+                            <button class="slag-btn" onclick="ml_ubahSlag(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="ml_elevasi_awal">Elevasi Awal Patok (m):</label>
+                        <input type="number" id="ml_elevasi_awal" placeholder="Contoh: 18.000" step="any" oninput="ml_hitung()">
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="ml_hitung()">HITUNG PROFIL MELINTANG</button>
+                <button class="btn-pdf" onclick="downloadPDF_ML()">
+                    📄 Download Tabel Profil Melintang PDF (Format F4 Portrait)
+                </button>
+
+                <div class="table-responsive">
+                    <table id="tabel-profil-melintang" class="survey-table-bw" border="1">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Tempat<br>Pesawat</th>
+                                <th rowspan="2">No Titik</th>
+                                <th colspan="3">Pembacaan Baak</th>
+                                <th colspan="2">Jarak (M)</th>
+                                <th rowspan="2">Beda Tinggi<br>&#916;H</th>
+                                <th rowspan="2">Koreksi (C)</th>
+                                <th colspan="2">Ketinggian</th>
+                                <th rowspan="2">Ket</th>
+                            </tr>
+                            <tr>
+                                <th>Belakang</th>
+                                <th>BT - Detail</th>
+                                <th>Muka</th>
+                                <th>Pesawat</th>
+                                <th>Titik</th>
+                                <th>Patok</th>
+                                <th>Tanah</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ml_tbody">
+                            <!-- Diisi JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -396,6 +534,12 @@
             </button>
             <button class="tab-btn" onclick="switchTab(event, 'tab-ds')">
                 <span>👥</span> Double Stand
+            </button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-memanjang')">
+                <span>📏</span> Profil Memanjang
+            </button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-melintang')">
+                <span>📐</span> Profil Melintang
             </button>
         </div>
     </div>
@@ -419,7 +563,7 @@
     }
 
     /* ==========================================================================
-       2. TAB BENANG TUNGGAL
+       2. TAB BENANG TUNGGAL 
        ========================================================================== */
     function hitungPemetaanTunggal() {
         let ba = document.getElementById('input_ba').value !== "" ? parseFloat(document.getElementById('input_ba').value) : null;
@@ -444,10 +588,17 @@
     }
 
     /* ==========================================================================
-       3. TAB PERGI PULANG (ZIG-ZAG)
+       3. TAB PERGI PULANG (UNLIMITED SLAG)
        ========================================================================== */
+    let pp_totalSlag = 4;
+    function pp_ubahSlag(jumlah) {
+        pp_totalSlag += jumlah;
+        if (pp_totalSlag < 1) pp_totalSlag = 1;
+        document.getElementById('pp_slag_counter').innerText = pp_totalSlag + " Slag";
+        pp_generateTable();
+    }
+
     function pp_normalize(val) { return (val === "" || isNaN(val)) ? NaN : (parseFloat(val) > 10 ? parseFloat(val)/1000 : parseFloat(val)); }
-    
     function pp_createStackInput(prefix) {
         return `
             <div class="stack-input" id="pp_wrap_${prefix}">
@@ -459,13 +610,10 @@
     }
 
     function pp_generateTable() {
-        let totalSlag = parseInt(document.querySelector('input[name="pp_tp_option"]:checked').value);
         let tbody = document.getElementById('pp_table_body');
         tbody.innerHTML = '';
-        
         let currentElev = document.getElementById('pp_elevasi_awal_tabel') ? document.getElementById('pp_elevasi_awal_tabel').value : (document.getElementById('pp_elevasi_awal').value || "");
         
-        // Baris Khusus Elevasi Awal (Ditampilkan di PDF)
         let elevRow = `
         <tr>
             <td colspan="11" style="text-align:right; font-weight:bold; background:#fff3e0; color:#e65100;">ELEVASI AWAL P1 (m) :</td>
@@ -475,9 +623,8 @@
         `;
         tbody.innerHTML += elevRow;
 
-        for (let i = 1; i <= totalSlag; i++) {
-            let tp = `TP${i}`, targetB = `P${i}`, targetM = (i === totalSlag) ? `P1` : `P${i + 1}`; 
-            
+        for (let i = 1; i <= pp_totalSlag; i++) {
+            let tp = `TP${i}`, targetB = `P${i}`, targetM = (i === pp_totalSlag) ? `P1` : `P${i + 1}`; 
             let row1 = `
                 <tr>
                     <td rowspan="2" style="font-weight:bold;">${tp}</td>
@@ -506,33 +653,15 @@
             `;
             tbody.innerHTML += row1 + row2;
         }
-
-        // Baris Khusus Kesimpulan (Total)
-        let totalRow = `
-        <tr style="background:#e8f5e9; font-weight:bold;">
-            <td colspan="6" style="text-align:right; color:var(--primary-color);">TOTAL KESIMPULAN :</td>
-            <td id="pp_tot_jarak" style="color:var(--primary-color);">-</td>
-            <td id="pp_tot_dh_pergi" style="color:var(--primary-color);">-</td>
-            <td id="pp_tot_dh_pulang" style="color:var(--primary-color);">-</td>
-            <td id="pp_tot_dh_rata" style="color:var(--primary-color);">-</td>
-            <td id="pp_tot_koreksi" style="color:var(--primary-color);">-</td>
-            <td colspan="2"></td>
-        </tr>
-        `;
-        tbody.innerHTML += totalRow;
-
         pp_calculateAll();
     }
 
     function pp_calculateAll() {
-        let totalSlag = parseInt(document.querySelector('input[name="pp_tp_option"]:checked').value);
         let elevAwal = document.getElementById('pp_elevasi_awal').value !== "" ? parseFloat(document.getElementById('pp_elevasi_awal').value) : null;
         document.getElementById('pp_display_elevasi_awal').innerText = elevAwal !== null ? formatAngka(elevAwal) + " m" : "-";
 
         let totalDhRata = 0, validSlag = 0, dataDh = [];
-        let sumJarak = 0, sumDhPergi = 0, sumDhPulang = 0;
-
-        for (let i = 1; i <= totalSlag; i++) {
+        for (let i = 1; i <= pp_totalSlag; i++) {
             let baPB = pp_normalize(document.getElementById(`pp_ba_pergi_blk_${i}`)?.value);
             let bbPB = pp_normalize(document.getElementById(`pp_bb_pergi_blk_${i}`)?.value);
             let btPB = pp_normalize(document.getElementById(`pp_bt_pergi_blk_${i}`)?.value);
@@ -546,17 +675,11 @@
             let bbPuM = pp_normalize(document.getElementById(`pp_bb_pulang_mk_${i}`)?.value);
             let btPuM = pp_normalize(document.getElementById(`pp_bt_pulang_mk_${i}`)?.value);
 
-            let wrapPB = document.getElementById(`pp_wrap_pergi_blk_${i}`);
-            if(wrapPB && !isNaN(baPB) && !isNaN(btPB) && !isNaN(bbPB)) {
-                if(Math.abs(((baPB+bbPB)/2)-btPB) > 0.003) wrapPB.classList.add('error-thread'); else wrapPB.classList.remove('error-thread');
-            }
-
             let dPergi = (!isNaN(baPB) && !isNaN(bbPB) ? (baPB-bbPB)*100 : 0) + (!isNaN(baPM) && !isNaN(bbPM) ? (baPM-bbPM)*100 : 0);
             let dPulang = (!isNaN(baPuB) && !isNaN(bbPuB) ? (baPuB-bbPuB)*100 : 0) + (!isNaN(baPuM) && !isNaN(bbPuM) ? (baPuM-bbPuM)*100 : 0);
             let dRata = (dPergi && dPulang) ? (dPergi+dPulang)/2 : (dPergi || dPulang);
             
-            let elJarak = document.getElementById(`pp_jarak_${i}`);
-            if(elJarak) elJarak.innerText = dRata ? formatAngka(dRata) : "-";
+            if(document.getElementById(`pp_jarak_${i}`)) document.getElementById(`pp_jarak_${i}`).innerText = dRata ? formatAngka(dRata) : "-";
 
             let dhPergi = (!isNaN(btPB) && !isNaN(btPM)) ? (btPB - btPM) : null;
             let dhPulang = (!isNaN(btPuB) && !isNaN(btPuM)) ? (btPuB - btPuM) : null;
@@ -568,43 +691,29 @@
             
             dataDh[i] = dhRata;
             if (dhRata !== null) { totalDhRata += dhRata; validSlag++; }
-            if (dRata) sumJarak += dRata;
-            if (dhPergi !== null) sumDhPergi += dhPergi;
-            if (dhPulang !== null) sumDhPulang += dhPulang;
         }
 
         let koreksi = validSlag > 0 ? (totalDhRata / validSlag) * -1 : 0;
-        
-        for (let i = 1; i <= totalSlag; i++) {
+        for (let i = 1; i <= pp_totalSlag; i++) {
             if(document.getElementById(`pp_koreksi_${i}`)) document.getElementById(`pp_koreksi_${i}`).innerText = dataDh[i] !== null ? formatAngka(koreksi) : "-";
             if (elevAwal !== null && dataDh[i] !== null) {
                 elevAwal = elevAwal + dataDh[i] + koreksi;
-                let targetMuka = (i === totalSlag) ? `P1` : `P${i + 1}`;
+                let targetMuka = (i === pp_totalSlag) ? `P1` : `P${i + 1}`;
                 if(document.getElementById(`pp_elevasi_${i}`)) document.getElementById(`pp_elevasi_${i}`).innerText = targetMuka + " = " + formatAngka(elevAwal);
             } else {
                 if(document.getElementById(`pp_elevasi_${i}`)) document.getElementById(`pp_elevasi_${i}`).innerText = "-";
             }
         }
-
-        // Tampilkan Hasil Total Kesimpulan
-        if(document.getElementById('pp_tot_jarak')) document.getElementById('pp_tot_jarak').innerText = sumJarak > 0 ? formatAngka(sumJarak) : "-";
-        if(document.getElementById('pp_tot_dh_pergi')) document.getElementById('pp_tot_dh_pergi').innerText = sumDhPergi !== 0 ? formatAngka(sumDhPergi) : "-";
-        if(document.getElementById('pp_tot_dh_pulang')) document.getElementById('pp_tot_dh_pulang').innerText = sumDhPulang !== 0 ? formatAngka(sumDhPulang) : "-";
-        if(document.getElementById('pp_tot_dh_rata')) document.getElementById('pp_tot_dh_rata').innerText = totalDhRata !== 0 ? formatAngka(totalDhRata) : "-";
-        if(document.getElementById('pp_tot_koreksi')) document.getElementById('pp_tot_koreksi').innerText = validSlag > 0 ? formatAngka(koreksi * validSlag) : "-";
     }
 
     /* ==========================================================================
-       4. TAB WATERPASS DOUBLE STAND LOGIC
+       4. TAB DOUBLE STAND (UNLIMITED SLAG)
        ========================================================================== */
     let ds_jumlahSlag = 4;
-
-    function ds_updateKonfigurasiSlag() {
-        let selectEl = document.getElementById('ds_select_pesawat');
-        if (!selectEl) return;
-        ds_jumlahSlag = parseInt(selectEl.value);
-        let displayTarget = document.getElementById('ds_display_target');
-        if (displayTarget) displayTarget.innerText = `Target/Slag Otomatis: ${ds_jumlahSlag} Slag`;
+    function ds_ubahSlag(jumlah) {
+        ds_jumlahSlag += jumlah;
+        if (ds_jumlahSlag < 1) ds_jumlahSlag = 1;
+        document.getElementById('ds_slag_counter').innerText = ds_jumlahSlag + " Slag";
         ds_inisialisasiTabel();
     }
 
@@ -612,10 +721,8 @@
         let tbody = document.getElementById('ds_tbody_tabel');
         if (!tbody) return;
         tbody.innerHTML = '';
-        
         let currentElev = document.getElementById('ds_elevasi_awal_tabel') ? document.getElementById('ds_elevasi_awal_tabel').value : (document.getElementById('ds_elevasi_awal').value || "");
         
-        // Baris Khusus Elevasi Awal untuk Cetak PDF (Spans disesuaikan jumlah kolom = 23)
         let elevRow = `
         <tr>
             <td colspan="19" style="text-align:right; font-weight:bold; background:#fff3e0; color:#e65100;">ELEVASI AWAL P1 (m) :</td>
@@ -633,21 +740,15 @@
             <tr id="ds_row_${i}_1">
                 <td rowspan="2"><input type="text" value="TP${i}" id="ds_p_${i}" oninput="this.setAttribute('value', this.value)"></td>
                 <td><input type="text" value="${targetBelakang}" id="ds_t_${i}_b" oninput="this.setAttribute('value', this.value)"></td>
-                
-                <td><input type="number" placeholder="BA" id="ds_ba_pos1_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="ds_bt_pos1_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="ds_bb_pos1_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                
+                <td><input type="number" placeholder="BA" id="ds_ba_pos1_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BT" id="ds_bt_pos1_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BB" id="ds_bb_pos1_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
                 <td class="empty-cell">-</td><td class="empty-cell">-</td><td class="empty-cell">-</td>
-                
                 <td class="calc-out" id="ds_jarak_pergi_${i}">-</td>
-                
-                <td><input type="number" placeholder="BA" id="ds_ba_pos2_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="ds_bt_pos2_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="ds_bb_pos2_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-
+                <td><input type="number" placeholder="BA" id="ds_ba_pos2_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BT" id="ds_bt_pos2_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BB" id="ds_bb_pos2_b_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
                 <td class="empty-cell">-</td><td class="empty-cell">-</td><td class="empty-cell">-</td>
-
                 <td rowspan="2" class="calc-out" id="ds_beda_pos1_${i}">-</td>
                 <td rowspan="2" class="calc-out" id="ds_beda_pos2_${i}">-</td>
                 <td rowspan="2" class="calc-out" id="ds_rata_rata_${i}">-</td>
@@ -661,20 +762,15 @@
             let row2 = `
             <tr id="ds_row_${i}_2">
                 <td><input type="text" value="${targetMuka}" id="ds_t_${i}_m" oninput="this.setAttribute('value', this.value)"></td>
-
                 <td class="empty-cell">-</td><td class="empty-cell">-</td><td class="empty-cell">-</td>
-
-                <td><input type="number" placeholder="BA" id="ds_ba_pos1_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="ds_bt_pos1_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="ds_bb_pos1_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-
+                <td><input type="number" placeholder="BA" id="ds_ba_pos1_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BT" id="ds_bt_pos1_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BB" id="ds_bb_pos1_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
                 <td class="calc-out" id="ds_jarak_pulang_${i}">-</td>
-
                 <td class="empty-cell">-</td><td class="empty-cell">-</td><td class="empty-cell">-</td>
-
-                <td><input type="number" placeholder="BA" id="ds_ba_pos2_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BT" id="ds_bt_pos2_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
-                <td><input type="number" placeholder="BB" id="ds_bb_pos2_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()"></td>
+                <td><input type="number" placeholder="BA" id="ds_ba_pos2_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BT" id="ds_bt_pos2_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
+                <td><input type="number" placeholder="BB" id="ds_bb_pos2_m_${i}" oninput="this.setAttribute('value', this.value); ds_prosesKalkulasiTabel()" step="any"></td>
             </tr>`;
 
             let row3 = `
@@ -683,299 +779,360 @@
                 <td class="val-jarak-rata" id="ds_jarak_rata_${i}">-</td>
                 <td colspan="14" style="background: #f5f5f5;">-</td>
             </tr>`;
-
             tbody.innerHTML += (row1 + row2 + row3);
         }
-
-        // Baris Khusus Kesimpulan (Total)
-        let totalRow = `
-        <tr style="background:#e8f5e9; font-weight:bold;">
-            <td colspan="8" style="text-align:right; color:var(--primary-color);">TOTAL KESIMPULAN :</td>
-            <td id="ds_tot_jarak" style="color:var(--primary-color);">-</td>
-            <td colspan="6"></td>
-            <td id="ds_tot_beda1" style="color:var(--primary-color);">-</td>
-            <td id="ds_tot_beda2" style="color:var(--primary-color);">-</td>
-            <td id="ds_tot_rata" style="color:var(--primary-color);">-</td>
-            <td id="ds_tot_koreksi" style="color:var(--primary-color);">-</td>
-            <td colspan="4"></td>
-        </tr>
-        `;
-        tbody.innerHTML += totalRow;
-
         ds_prosesKalkulasiTabel();
     }
 
-    function ds_cekToleransiBenang(ba, bt, bb, id_ba, id_bt, id_bb) {
-        let el_ba = document.getElementById(id_ba);
-        let el_bt = document.getElementById(id_bt);
-        let el_bb = document.getElementById(id_bb);
-        
-        if (el_ba && el_bt && el_bb && !isNaN(ba) && !isNaN(bt) && !isNaN(bb)) {
-            let selisih = Math.abs((ba + bb) - (2 * bt));
-            let batasToleransi = (ba > 100 || bt > 100 || bb > 100) ? 3.01 : 0.0031; 
-
-            if (selisih > batasToleransi) {
-                el_ba.classList.add('error-benang');
-                el_bt.classList.add('error-benang');
-                el_bb.classList.add('error-benang');
-            } else {
-                el_ba.classList.remove('error-benang');
-                el_bt.classList.remove('error-benang');
-                el_bb.classList.remove('error-benang');
-            }
-        } else {
-            if(el_ba) el_ba.classList.remove('error-benang');
-            if(el_bt) el_bt.classList.remove('error-benang');
-            if(el_bb) el_bb.classList.remove('error-benang');
-        }
-    }
-
     function ds_prosesKalkulasiTabel() {
-        let elevasiInput = document.getElementById('ds_elevasi_awal') ? document.getElementById('ds_elevasi_awal').value : "";
-        let elevasiAwal = elevasiInput !== "" ? parseFloat(elevasiInput) : null;
-
-        let totalRataRata = 0, countSlagValid = 0;
-        let sumJarak = 0, sumBeda1 = 0, sumBeda2 = 0;
-        let dataRata = [], dataBeda1 = [], dataBeda2 = [];
-        let proofText = "";
-
-        proofText += `<div style="margin-bottom:12px;"><b>1. Status Elevasi Awal:</b><br>`;
-        if (elevasiAwal !== null) {
-            proofText += `$\\text{Elevasi Awal} = \\mathbf{${formatAngka(elevasiAwal)} \\text{ m}}$</div>`;
-        } else {
-            proofText += `<span style="color:red;"><i>[!] Elevasi awal belum diisi.</i></span></div>`;
-        }
-
-        proofText += `<b>2. Perhitungan Jarak & Beda Tinggi Per Slag:</b><br>`;
+        let elevasiAwal = document.getElementById('ds_elevasi_awal').value !== "" ? parseFloat(document.getElementById('ds_elevasi_awal').value) : null;
+        let totalRataRata = 0, countSlagValid = 0, dataRata = [];
+        let proofText = `<b>1. Status Elevasi Awal:</b> ${elevasiAwal !== null ? formatAngka(elevasiAwal) + " m" : "[ Belum diisi ]"}<br><br>`;
 
         for (let i = 1; i <= ds_jumlahSlag; i++) {
             let ba1_b = parseFloat(document.getElementById(`ds_ba_pos1_b_${i}`)?.value);
             let bb1_b = parseFloat(document.getElementById(`ds_bb_pos1_b_${i}`)?.value);
             let bt1_b = parseFloat(document.getElementById(`ds_bt_pos1_b_${i}`)?.value);
-
             let ba1_m = parseFloat(document.getElementById(`ds_ba_pos1_m_${i}`)?.value);
             let bb1_m = parseFloat(document.getElementById(`ds_bb_pos1_m_${i}`)?.value);
             let bt1_m = parseFloat(document.getElementById(`ds_bt_pos1_m_${i}`)?.value);
 
-            let ba2_b = parseFloat(document.getElementById(`ds_ba_pos2_b_${i}`)?.value);
-            let bb2_b = parseFloat(document.getElementById(`ds_bb_pos2_b_${i}`)?.value);
-            let bt2_b = parseFloat(document.getElementById(`ds_bt_pos2_b_${i}`)?.value);
-
-            let ba2_m = parseFloat(document.getElementById(`ds_ba_pos2_m_${i}`)?.value);
-            let bb2_m = parseFloat(document.getElementById(`ds_bb_pos2_m_${i}`)?.value);
-            let bt2_m = parseFloat(document.getElementById(`ds_bt_pos2_m_${i}`)?.value);
-
-            ds_cekToleransiBenang(ba1_b, bt1_b, bb1_b, `ds_ba_pos1_b_${i}`, `ds_bt_pos1_b_${i}`, `ds_bb_pos1_b_${i}`);
-            ds_cekToleransiBenang(ba1_m, bt1_m, bb1_m, `ds_ba_pos1_m_${i}`, `ds_bt_pos1_m_${i}`, `ds_bb_pos1_m_${i}`);
-            ds_cekToleransiBenang(ba2_b, bt2_b, bb2_b, `ds_ba_pos2_b_${i}`, `ds_bt_pos2_b_${i}`, `ds_bb_pos2_b_${i}`);
-            ds_cekToleransiBenang(ba2_m, bt2_m, bb2_m, `ds_ba_pos2_m_${i}`, `ds_bt_pos2_m_${i}`, `ds_bb_pos2_m_${i}`);
-
             let d1_b = (!isNaN(ba1_b) && !isNaN(bb1_b)) ? ((ba1_b - bb1_b) * 100) / 1000 : null;
             let d1_m = (!isNaN(ba1_m) && !isNaN(bb1_m)) ? ((ba1_m - bb1_m) * 100) / 1000 : null;
-            let d2_b = (!isNaN(ba2_b) && !isNaN(bb2_b)) ? ((ba2_b - bb2_b) * 100) / 1000 : null;
-            let d2_m = (!isNaN(ba2_m) && !isNaN(bb2_m)) ? ((ba2_m - bb2_m) * 100) / 1000 : null;
-
             let jarakPergi = (d1_b !== null || d1_m !== null) ? ((d1_b || 0) + (d1_m || 0)) : null;
-            let jarakPulang = (d2_b !== null || d2_m !== null) ? ((d2_b || 0) + (d2_m || 0)) : null;
-
-            let jarakRata = null;
-            if (jarakPergi !== null && jarakPulang !== null) {
-                jarakRata = (jarakPergi + jarakPulang) / 2;
-            } else if (jarakPergi !== null) {
-                jarakRata = jarakPergi;
-            } else if (jarakPulang !== null) {
-                jarakRata = jarakPulang;
-            }
 
             if(document.getElementById(`ds_jarak_pergi_${i}`)) document.getElementById(`ds_jarak_pergi_${i}`).innerText = formatAngka(jarakPergi);
-            if(document.getElementById(`ds_jarak_pulang_${i}`)) document.getElementById(`ds_jarak_pulang_${i}`).innerText = formatAngka(jarakPulang);
-            if(document.getElementById(`ds_jarak_rata_${i}`)) document.getElementById(`ds_jarak_rata_${i}`).innerText = formatAngka(jarakRata);
-            if (jarakRata !== null) sumJarak += jarakRata;
+            if(document.getElementById(`ds_jarak_rata_${i}`)) document.getElementById(`ds_jarak_rata_${i}`).innerText = formatAngka(jarakPergi);
 
             if (!isNaN(bt1_b) && !isNaN(bt1_m)) {
-                let beda1 = (bt1_b - bt1_m) / 1000;
-                let beda2 = (!isNaN(bt2_b) && !isNaN(bt2_m)) ? ((bt2_b - bt2_m) / 1000) : beda1;
-                let rata = (beda1 + beda2) / 2;
-
+                let beda1 = (bt1_b - bt1_m);
+                let rata = beda1;
                 if(document.getElementById(`ds_beda_pos1_${i}`)) document.getElementById(`ds_beda_pos1_${i}`).innerText = formatAngka(beda1);
-                if(document.getElementById(`ds_beda_pos2_${i}`)) document.getElementById(`ds_beda_pos2_${i}`).innerText = formatAngka(beda2);
                 if(document.getElementById(`ds_rata_rata_${i}`)) document.getElementById(`ds_rata_rata_${i}`).innerText = formatAngka(rata);
-
-                proofText += `<div style="background:#fff; padding:8px; border-radius:5px; margin:5px 0; border:1px solid #e0e0e0;">`;
-                proofText += `<b><u>SLAG / STAND ${i}:</u></b><br>`;
-                proofText += `$\\text{Jarak Pos I} = ${formatAngka(d1_b)} + ${formatAngka(d1_m)} = \\mathbf{${formatAngka(jarakPergi)} \\text{ m}}$<br>`;
-                proofText += `$\\text{Jarak Pos II} = ${formatAngka(d2_b)} + ${formatAngka(d2_m)} = \\mathbf{${formatAngka(jarakPulang)} \\text{ m}}$<br>`;
-                proofText += `$\\text{Beda Tinggi Pos I} = \\mathbf{${formatAngka(beda1)} \\text{ m}}, \\quad \\text{Pos II} = \\mathbf{${formatAngka(beda2)} \\text{ m}}$<br>`;
-                proofText += `$\\text{Rata-rata Beda Tinggi} = \\mathbf{${formatAngka(rata)} \\text{ m}}$</div>`;
-
                 totalRataRata += rata;
-                sumBeda1 += beda1;
-                sumBeda2 += beda2;
                 countSlagValid++;
                 dataRata[i] = rata;
-                dataBeda1[i] = beda1;
-                dataBeda2[i] = beda2;
-            } else {
-                if(document.getElementById(`ds_beda_pos1_${i}`)) document.getElementById(`ds_beda_pos1_${i}`).innerText = "-";
-                if(document.getElementById(`ds_beda_pos2_${i}`)) document.getElementById(`ds_beda_pos2_${i}`).innerText = "-";
-                if(document.getElementById(`ds_rata_rata_${i}`)) document.getElementById(`ds_rata_rata_${i}`).innerText = "-";
-                dataRata[i] = null;
-                dataBeda1[i] = null;
-                dataBeda2[i] = null;
             }
         }
-
         let koreksiPerSlag = countSlagValid > 0 ? (totalRataRata * -1) / countSlagValid : 0;
-
-        proofText += `<br><b>3. Rekapitulasi & Koreksi Slag:</b><br>`;
-        proofText += `$\\text{Jumlah Rata-rata} = \\mathbf{${formatAngka(totalRataRata)} \\text{ m}}, \\quad \\text{Koreksi/Slag} = \\mathbf{${formatAngka(koreksiPerSlag)} \\text{ m}}$`;
-
-        let tinggiPos1 = [], tinggiPos2 = [], tinggiFinal = [];
-
-        if (elevasiAwal !== null && countSlagValid === ds_jumlahSlag) {
-            let elevBerjalanPos1 = elevasiAwal;
-            for (let i = 1; i <= ds_jumlahSlag; i++) {
-                let prev = elevBerjalanPos1;
-                elevBerjalanPos1 = prev + dataBeda1[i] + dataRata[i] + koreksiPerSlag;
-                tinggiPos1[i] = elevBerjalanPos1;
-            }
-
-            let elevBerjalanPos2 = tinggiPos1[ds_jumlahSlag];
-            tinggiPos2[ds_jumlahSlag] = elevBerjalanPos2;
-
-            for (let i = ds_jumlahSlag - 1; i >= 1; i--) {
-                let nextVal = tinggiPos2[i + 1];
-                tinggiPos2[i] = nextVal + dataBeda2[i] + dataRata[i] + koreksiPerSlag;
-            }
-
-            for (let i = 1; i <= ds_jumlahSlag; i++) {
-                tinggiFinal[i] = (tinggiPos1[i] + tinggiPos2[i]) / 2;
+        let elevBerjalan = elevasiAwal;
+        
+        for (let i = 1; i <= ds_jumlahSlag; i++) {
+            if (elevBerjalan !== null && dataRata[i] !== undefined) {
+                elevBerjalan = elevBerjalan + dataRata[i] + koreksiPerSlag;
                 if(document.getElementById(`ds_koreksi_${i}`)) document.getElementById(`ds_koreksi_${i}`).innerText = formatAngka(koreksiPerSlag);
-                if(document.getElementById(`ds_tinggi_titik1_${i}`)) document.getElementById(`ds_tinggi_titik1_${i}`).innerText = formatAngka(tinggiPos1[i]);
-                if(document.getElementById(`ds_tinggi_titik2_${i}`)) document.getElementById(`ds_tinggi_titik2_${i}`).innerText = formatAngka(tinggiPos2[i]);
-                if(document.getElementById(`ds_hasil_final_${i}`)) document.getElementById(`ds_hasil_final_${i}`).innerText = formatAngka(tinggiFinal[i]);
-            }
-        } else {
-            for (let i = 1; i <= ds_jumlahSlag; i++) {
-                if(document.getElementById(`ds_koreksi_${i}`)) document.getElementById(`ds_koreksi_${i}`).innerText = (dataRata[i] !== null) ? formatAngka(koreksiPerSlag) : "-";
-                if(document.getElementById(`ds_tinggi_titik1_${i}`)) document.getElementById(`ds_tinggi_titik1_${i}`).innerText = "-";
-                if(document.getElementById(`ds_tinggi_titik2_${i}`)) document.getElementById(`ds_tinggi_titik2_${i}`).innerText = "-";
-                if(document.getElementById(`ds_hasil_final_${i}`)) document.getElementById(`ds_hasil_final_${i}`).innerText = "-";
+                if(document.getElementById(`ds_tinggi_titik1_${i}`)) document.getElementById(`ds_tinggi_titik1_${i}`).innerText = formatAngka(elevBerjalan);
+                if(document.getElementById(`ds_hasil_final_${i}`)) document.getElementById(`ds_hasil_final_${i}`).innerText = formatAngka(elevBerjalan);
             }
         }
+        document.getElementById('ds_proofLog').innerHTML = proofText;
+    }
 
-        // Menampilkan Total di baris paling bawah
-        if(document.getElementById('ds_tot_jarak')) document.getElementById('ds_tot_jarak').innerText = sumJarak > 0 ? formatAngka(sumJarak) : "-";
-        if(document.getElementById('ds_tot_beda1')) document.getElementById('ds_tot_beda1').innerText = sumBeda1 !== 0 ? formatAngka(sumBeda1) : "-";
-        if(document.getElementById('ds_tot_beda2')) document.getElementById('ds_tot_beda2').innerText = sumBeda2 !== 0 ? formatAngka(sumBeda2) : "-";
-        if(document.getElementById('ds_tot_rata')) document.getElementById('ds_tot_rata').innerText = totalRataRata !== 0 ? formatAngka(totalRataRata) : "-";
-        if(document.getElementById('ds_tot_koreksi')) document.getElementById('ds_tot_koreksi').innerText = countSlagValid > 0 ? formatAngka(koreksiPerSlag * countSlagValid) : "-";
+    /* ==========================================================================
+       5. TAB PROFIL MEMANJANG (UNLIMITED SLAG)
+       ========================================================================== */
+    let pm_totalSlag = 3;
+    function pm_ubahSlag(jumlah) {
+        pm_totalSlag += jumlah;
+        if (pm_totalSlag < 1) pm_totalSlag = 1;
+        document.getElementById('pm_slag_counter').innerText = pm_totalSlag + " Slag";
+        pm_generateTable();
+    }
 
-        let proofLogEl = document.getElementById('ds_proofLog');
-        if (proofLogEl) {
-            proofLogEl.innerHTML = proofText;
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                MathJax.typesetPromise([proofLogEl]).catch(err => console.log(err));
+    function pm_generateTable() {
+        let tbody = document.getElementById('pm_tbody');
+        tbody.innerHTML = '';
+
+        for (let i = 1; i <= pm_totalSlag; i++) {
+            let tpName = i === 1 ? "TP1" : `TP${i}`;
+            let row = `
+                <tr>
+                    <td><input type="text" value="${tpName}" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="number" placeholder="BA" id="pm_blk_ba_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" id="pm_det_ba_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" placeholder="BA" id="pm_mk_ba_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td></td><td></td><td></td>
+                    <td class="bw-final-val" id="pm_tanah_ba_${i}"></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="TA=" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="text" value="P${i}" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="number" placeholder="BT" id="pm_blk_bt_${i}" oninput="this.setAttribute('value', this.value); pm_hitung()" step="any"></td>
+                    <td><input type="number" placeholder="BT Detail" id="pm_det_bt_${i}" oninput="this.setAttribute('value', this.value); pm_hitung()" step="any"></td>
+                    <td><input type="number" placeholder="BT" id="pm_mk_bt_${i}" oninput="this.setAttribute('value', this.value); pm_hitung()" step="any"></td>
+                    <td><input type="number" placeholder="J.Pesawat" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" placeholder="J.Titik" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td class="bw-calc-out" id="pm_dh_${i}">-</td>
+                    <td class="bw-calc-out" id="pm_kor_${i}">-</td>
+                    <td class="bw-final-val" id="pm_patok_${i}">-</td>
+                    <td class="bw-final-val" id="pm_tanah_bt_${i}">-</td>
+                    <td><input type="text" placeholder="Ket" oninput="this.setAttribute('value', this.value)"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="number" placeholder="BB" id="pm_blk_bb_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" id="pm_det_bb_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" placeholder="BB" id="pm_mk_bb_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td></td><td></td><td></td><td></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="12"></td></tr>
+            `;
+            tbody.innerHTML += row;
+        }
+        pm_hitung();
+    }
+
+    function pm_hitung() {
+        let elevAwal = parseFloat(document.getElementById('pm_elevasi_awal').value);
+        let currentElev = isNaN(elevAwal) ? 0 : elevAwal;
+
+        for (let i = 1; i <= pm_totalSlag; i++) {
+            let blk_bt = parseFloat(document.getElementById(`pm_blk_bt_${i}`)?.value);
+            let det_bt = parseFloat(document.getElementById(`pm_det_bt_${i}`)?.value);
+            let mk_bt = parseFloat(document.getElementById(`pm_mk_bt_${i}`)?.value);
+
+            let dhEl = document.getElementById(`pm_dh_${i}`);
+            let patokEl = document.getElementById(`pm_patok_${i}`);
+            let tanahEl = document.getElementById(`pm_tanah_bt_${i}`);
+
+            let dh = NaN;
+            if (!isNaN(blk_bt) && !isNaN(mk_bt)) { dh = blk_bt - mk_bt; } 
+            else if (!isNaN(blk_bt) && !isNaN(det_bt)) { dh = blk_bt - det_bt; }
+
+            if (!isNaN(dh)) {
+                if(dhEl) dhEl.innerText = formatAngka(dh);
+                currentElev += dh;
+                if(patokEl) patokEl.innerText = formatAngka(currentElev);
+                if(tanahEl) tanahEl.innerText = formatAngka(currentElev);
+            } else {
+                if(dhEl) dhEl.innerText = "-";
+                if(patokEl) patokEl.innerText = "-";
+                if(tanahEl) tanahEl.innerText = "-";
             }
         }
     }
 
     /* ==========================================================================
-       5. FUNGSI DOWNLOAD PDF (PERGI-PULANG & DOUBLE STAND)
+       6. TAB PROFIL MELINTANG (UNLIMITED SLAG)
        ========================================================================== */
-    function downloadPDF_PP() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('landscape', 'pt', 'a4');
-        
-        const originalTable = document.getElementById('tabel-waterpass-pp');
-        const clonedTable = originalTable.cloneNode(true);
-        
-        const stackInputs = clonedTable.querySelectorAll('.stack-input');
-        stackInputs.forEach(stack => {
-            const inputs = stack.querySelectorAll('input');
-            const vals = [];
-            inputs.forEach(input => {
-                const val = input.value || input.getAttribute('value') || '';
-                if (val.trim() !== '') {
-                    vals.push(val.trim());
-                }
-            });
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = vals.join('<br>');
-            stack.parentNode.replaceChild(wrapper, stack);
-        });
-
-        const remainingInputs = clonedTable.querySelectorAll('input');
-        remainingInputs.forEach(input => {
-            const val = input.value || input.getAttribute('value') || '';
-            const span = document.createElement('span');
-            span.textContent = val;
-            input.parentNode.replaceChild(span, input);
-        });
-
-        doc.autoTable({
-            html: clonedTable,
-            theme: 'grid',
-            styles: {
-                fontSize: 8,
-                halign: 'center',
-                valign: 'middle',
-                lineWidth: 0.5,
-                lineColor: [0, 0, 0],
-                cellPadding: 3
-            },
-            headStyles: {
-                fillColor: [255, 255, 255],
-                textColor: [0, 0, 0],       
-                fontStyle: 'bold'
-            }
-        });
-
-        doc.save('Form_Pengukuran_Waterpass_PergiPulang.pdf');
+    let ml_totalSlag = 5;
+    function ml_ubahSlag(jumlah) {
+        ml_totalSlag += jumlah;
+        if (ml_totalSlag < 1) ml_totalSlag = 1;
+        document.getElementById('ml_slag_counter').innerText = ml_totalSlag + " Slag";
+        ml_generateTable();
     }
 
-    function downloadPDF_DS() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('landscape', 'pt', 'a4');
-        
-        const originalTable = document.getElementById('tabel-waterpass-ds');
+    function ml_generateTable() {
+        let tbody = document.getElementById('ml_tbody');
+        tbody.innerHTML = '';
+
+        for (let i = 1; i <= ml_totalSlag; i++) {
+            let tpName = i === 1 ? "TP3" : `TP${i+2}`;
+            let row = `
+                <tr>
+                    <td><input type="text" value="${tpName}" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="number" placeholder="BA" id="ml_blk_ba_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" id="ml_det_ba_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" placeholder="BA" id="ml_mk_ba_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td></td><td></td><td></td>
+                    <td class="bw-final-val" id="ml_tanah_ba_${i}"></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" value="TA=" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="text" value="E${i}" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="number" placeholder="BT" id="ml_blk_bt_${i}" oninput="this.setAttribute('value', this.value); ml_hitung()" step="any"></td>
+                    <td><input type="number" placeholder="BT Detail" id="ml_det_bt_${i}" oninput="this.setAttribute('value', this.value); ml_hitung()" step="any"></td>
+                    <td><input type="number" placeholder="BT" id="ml_mk_bt_${i}" oninput="this.setAttribute('value', this.value); ml_hitung()" step="any"></td>
+                    <td><input type="number" placeholder="J.Pesawat" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" placeholder="J.Titik" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td class="bw-calc-out" id="ml_dh_${i}">-</td>
+                    <td class="bw-calc-out" id="ml_kor_${i}">-</td>
+                    <td class="bw-final-val" id="ml_patok_${i}">-</td>
+                    <td class="bw-final-val" id="ml_tanah_bt_${i}">-</td>
+                    <td><input type="text" placeholder="Ket" oninput="this.setAttribute('value', this.value)"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                    <td><input type="number" placeholder="BB" id="ml_blk_bb_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" id="ml_det_bb_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" placeholder="BB" id="ml_mk_bb_${i}" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td><input type="number" oninput="this.setAttribute('value', this.value)" step="any"></td>
+                    <td></td><td></td><td></td><td></td>
+                    <td><input type="text" oninput="this.setAttribute('value', this.value)"></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="12"></td></tr>
+            `;
+            tbody.innerHTML += row;
+        }
+        ml_hitung();
+    }
+
+    function ml_hitung() {
+        let elevAwal = parseFloat(document.getElementById('ml_elevasi_awal').value);
+        let currentElev = isNaN(elevAwal) ? 0 : elevAwal;
+
+        for (let i = 1; i <= ml_totalSlag; i++) {
+            let blk_bt = parseFloat(document.getElementById(`ml_blk_bt_${i}`)?.value);
+            let det_bt = parseFloat(document.getElementById(`ml_det_bt_${i}`)?.value);
+            let mk_bt = parseFloat(document.getElementById(`ml_mk_bt_${i}`)?.value);
+
+            let dhEl = document.getElementById(`ml_dh_${i}`);
+            let patokEl = document.getElementById(`ml_patok_${i}`);
+            let tanahEl = document.getElementById(`ml_tanah_bt_${i}`);
+
+            let dh = NaN;
+            if (!isNaN(blk_bt) && !isNaN(mk_bt)) { dh = blk_bt - mk_bt; } 
+            else if (!isNaN(blk_bt) && !isNaN(det_bt)) { dh = blk_bt - det_bt; }
+
+            if (!isNaN(dh)) {
+                if(dhEl) dhEl.innerText = formatAngka(dh);
+                currentElev += dh;
+                if(patokEl) patokEl.innerText = formatAngka(currentElev);
+                if(tanahEl) tanahEl.innerText = formatAngka(currentElev);
+            } else {
+                if(dhEl) dhEl.innerText = "-";
+                if(patokEl) patokEl.innerText = "-";
+                if(tanahEl) tanahEl.innerText = "-";
+            }
+        }
+    }
+
+    /* ==========================================================================
+       7. FUNGSI DOWNLOAD PDF (F4 LANDSCAPE / PORTRAIT DENGAN KOLOM 1 DATA)
+       ========================================================================== */
+    function processTableForPDF(tableId) {
+        const originalTable = document.getElementById(tableId);
         const clonedTable = originalTable.cloneNode(true);
-        
-        const inputs = clonedTable.querySelectorAll('input');
-        inputs.forEach(input => {
+        clonedTable.querySelectorAll('input').forEach(input => {
             const val = input.getAttribute('value') || input.value || '';
             const textNode = document.createTextNode(val);
             input.parentNode.insertBefore(textNode, input);
             input.remove();
         });
+        return clonedTable;
+    }
 
-        doc.autoTable({
-            html: clonedTable,
-            theme: 'grid',
-            styles: {
-                fontSize: 7,
-                halign: 'center',
-                valign: 'middle',
-                lineWidth: 0.5,
-                lineColor: [0, 0, 0],
-                cellPadding: 2
-            },
-            headStyles: {
-                fillColor: [255, 255, 255],
-                textColor: [0, 0, 0],       
-                fontStyle: 'bold'
-            }
+    function downloadPDF_PP() {
+        const { jsPDF } = window.jspdf;
+        // F4 Landscape: [330, 210] mm
+        const doc = new jsPDF('landscape', 'mm', [330, 210]);
+        doc.autoTable({ 
+            html: processTableForPDF('tabel-waterpass-pp'), 
+            theme: 'grid', 
+            styles: { fontSize: 7, halign: 'center', valign: 'middle' } 
         });
+        doc.save('Form_Waterpass_PergiPulang.pdf');
+    }
 
-        doc.save('Form_Pengukuran_Waterpass_DoubleStand.pdf');
+    function downloadPDF_DS() {
+        const { jsPDF } = window.jspdf;
+        // F4 Landscape: [330, 210] mm
+        const doc = new jsPDF('landscape', 'mm', [330, 210]);
+        doc.autoTable({ 
+            html: processTableForPDF('tabel-waterpass-ds'), 
+            theme: 'grid', 
+            styles: { fontSize: 6, halign: 'center', valign: 'middle' } 
+        });
+        doc.save('Form_Waterpass_DoubleStand.pdf');
+    }
+
+    function downloadPDF_PM() {
+        const { jsPDF } = window.jspdf;
+        // F4 Portrait: [210, 330] mm
+        const doc = new jsPDF('portrait', 'mm', [210, 330]);
+        let pw = doc.internal.pageSize.getWidth();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text("PENGUKURAN WATERPASS", pw / 2, 15, { align: "center" });
+        
+        let title2 = "TAMPANG MELINTANG / MEMANJANG";
+        doc.text(title2, pw / 2, 22, { align: "center" });
+        
+        let fullWidth = doc.getTextWidth(title2);
+        let startX = (pw - fullWidth) / 2;
+        let w1 = doc.getTextWidth("TAMPANG ");
+        let w2 = doc.getTextWidth("MELINTANG");
+        doc.setLineWidth(1.2);
+        doc.line(startX + w1, 19, startX + w1 + w2, 19);
+
+        doc.setFontSize(10);
+        doc.text("TEKNIK GEOMATIKA - SMK NEGERI 1 NGANJUK", pw / 2, 29, { align: "center" });
+        
+        doc.setLineWidth(1);
+        doc.line(15, 33, pw - 15, 33);
+
+        doc.autoTable({ 
+            html: processTableForPDF('tabel-profil-memanjang'), 
+            startY: 38, 
+            theme: 'plain', 
+            styles: { fontSize: 7, halign: 'center', valign: 'middle', textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.4 },
+            headStyles: { fillColor: [255, 255, 255], fontStyle: 'bold' }
+        });
+        doc.save('Form_Profil_Memanjang.pdf');
+    }
+
+    function downloadPDF_ML() {
+        const { jsPDF } = window.jspdf;
+        // F4 Portrait: [210, 330] mm
+        const doc = new jsPDF('portrait', 'mm', [210, 330]);
+        let pw = doc.internal.pageSize.getWidth();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text("PENGUKURAN WATERPASS", pw / 2, 15, { align: "center" });
+        
+        let title2 = "TAMPANG MELINTANG / MEMANJANG";
+        doc.text(title2, pw / 2, 22, { align: "center" });
+        
+        let fullWidth = doc.getTextWidth(title2);
+        let startX = (pw - fullWidth) / 2;
+        let w1 = doc.getTextWidth("TAMPANG MELINTANG / ");
+        let w2 = doc.getTextWidth("MEMANJANG");
+        doc.setLineWidth(1.2);
+        doc.line(startX + w1, 19, startX + w1 + w2, 19);
+
+        doc.setFontSize(10);
+        doc.text("TEKNIK GEOMATIKA - SMK NEGERI 1 NGANJUK", pw / 2, 29, { align: "center" });
+        
+        doc.setLineWidth(1);
+        doc.line(15, 33, pw - 15, 33);
+
+        doc.autoTable({ 
+            html: processTableForPDF('tabel-profil-melintang'), 
+            startY: 38, 
+            theme: 'plain',
+            styles: { fontSize: 7, halign: 'center', valign: 'middle', textColor: [0, 0, 0], lineColor: [0, 0, 0], lineWidth: 0.4 },
+            headStyles: { fillColor: [255, 255, 255], fontStyle: 'bold' }
+        });
+        doc.save('Form_Profil_Melintang.pdf');
     }
 
     /* Inisialisasi awal halaman */
     document.addEventListener('DOMContentLoaded', function() {
         pp_generateTable();
-        ds_updateKonfigurasiSlag();
+        ds_inisialisasiTabel();
+        pm_generateTable();
+        ml_generateTable();
     });
 </script>
 
 </body>
 </html>
+
+
