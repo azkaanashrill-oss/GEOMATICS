@@ -212,9 +212,14 @@
         .readonly-val, .calc-out { font-weight: bold; color: var(--primary-color); background-color: #f1f8e9; }
         .final-val { font-weight: bold; color: #e65100; background-color: #fff3e0; }
 
+        /* Tampilan Khusus Merah Saat Di Luar Toleransi Poligon */
+        .out-of-tolerance-data { color: #d32f2f !important; font-weight: bold !important; }
+
         .result-box, .proof-section { margin-top: 20px; background: #ffffff; border: 1px solid #a5d6a7; border-radius: 8px; padding: 16px; }
         .result-box { display: none; background: #e8f5e9; border-left: 4px solid var(--accent-color); }
         .proof-log { font-size: 12px; line-height: 1.7; background: #fafafa; padding: 12px; border-radius: 5px; border: 1px dashed #81c784; max-height: 400px; overflow-y: auto; }
+        
+        .alert-error-box { background-color: #ffebee !important; border-left: 4px solid #d32f2f !important; border-color: #ef9a9a !important; }
     </style>
 </head>
 <body>
@@ -225,7 +230,7 @@
     <div class="main-content">
         <header>
             <h1>GEOMATICS APP v2.0</h1>
-            <h2>Sistem Kalkulasi & Pengolahan Data Ukur Waterpass</h2>
+            <h2>Sistem Kalkulasi & Pengolahan Data Ukur Waterpass & Poligon</h2>
             <p>TEKNIK GEOMATIKA - SMK NEGERI 1 NGANJUK</p>
         </header>
 
@@ -390,10 +395,10 @@
                 <h3 class="section-title">📏 Pengukuran Profil Memanjang</h3>
                 <div class="setting-grid">
                     <div>
-                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Slag / Titik:</label>
+                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Titik:</label>
                         <div class="slag-controls">
                             <button class="slag-btn" onclick="pm_ubahSlag(-1)">-</button>
-                            <span id="pm_slag_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">3 Slag</span>
+                            <span id="pm_slag_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">3 Titik</span>
                             <button class="slag-btn" onclick="pm_ubahSlag(1)">+</button>
                         </div>
                     </div>
@@ -436,6 +441,79 @@
                 </div>
             </div>
 
+            <!-- TAB 5: POLIGON TERTUTUP -->
+            <div id="tab-poligon" class="tab-content">
+                <h3 class="section-title">📐 Perhitungan Poligon Tertutup</h3>
+                <div class="setting-grid">
+                    <div>
+                        <label class="input-group label" style="font-weight:bold; margin-bottom:8px;">Kelola Jumlah Titik:</label>
+                        <div class="slag-controls">
+                            <button class="slag-btn" onclick="poligon_ubahTitik(-1)">-</button>
+                            <span id="poligon_titik_counter" style="font-weight:bold; font-size:15px; flex:1; text-align:center;">4 Titik</span>
+                            <button class="slag-btn" onclick="poligon_ubahTitik(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="poligon_jenis_sudut">Syarat Sudut:</label>
+                        <select id="poligon_jenis_sudut" onchange="poligon_hitung()">
+                            <option value="luar">Sudut Luar ((n + 2) × 180°)</option>
+                            <option value="dalam">Sudut Dalam ((n - 2) × 180°)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="poligon_hitung()">HITUNG POLIGON TERTUTUP</button>
+                <button class="btn-pdf" onclick="downloadPDF_Poligon()">
+                    📄 Download Tabel Poligon Tertutup PDF (Format F4 Landscape)
+                </button>
+
+                <div class="table-responsive">
+                    <table id="tabel-poligon" class="survey-table" border="1">
+                        <thead>
+                            <tr>
+                                <th rowspan="3" style="width: 6%;">NO TITIK</th>
+                                <th colspan="7">BESAR SUDUT PENGAMBILAN</th>
+                                <th rowspan="3" style="width: 7%;">JARAK (D)<br>(m)</th>
+                                <th colspan="3">AZIMUTH (a)</th>
+                                <th colspan="2">ΔX (m)</th>
+                                <th colspan="2">ΔY (m)</th>
+                                <th colspan="2">KOORDINAT (m)</th>
+                            </tr>
+                            <tr>
+                                <th colspan="3">DATA</th>
+                                <th rowspan="2" style="width: 8%;">KOREKSI<br>(°, ', ")</th>
+                                <th colspan="3">TERKOREKSI</th>
+                                <th rowspan="2" style="width: 4%;">°</th>
+                                <th rowspan="2" style="width: 4%;">\'</th>
+                                <th rowspan="2" style="width: 6%;">"</th>
+                                <th rowspan="2" style="width: 7%;">ΔX</th>
+                                <th rowspan="2" style="width: 7%;">KOREKSI</th>
+                                <th rowspan="2" style="width: 7%;">ΔY</th>
+                                <th rowspan="2" style="width: 7%;">KOREKSI</th>
+                                <th rowspan="2" style="width: 8%;">X</th>
+                                <th rowspan="2" style="width: 8%;">Y</th>
+                            </tr>
+                            <tr>
+                                <th style="width: 4%;">°</th>
+                                <th style="width: 4%;">\'</th>
+                                <th style="width: 6%;">"</th>
+                                <th style="width: 4%;">°</th>
+                                <th style="width: 4%;">\'</th>
+                                <th style="width: 6%;">"</th>
+                            </tr>
+                        </thead>
+                        <tbody id="poligon_tbody"></tbody>
+                    </table>
+                </div>
+
+                <div class="result-box" id="poligonResultBox" style="display:block; margin-top:20px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">📋 Kesimpulan & Ringkasan Perhitungan Poligon:</h3>
+                    <div id="poligonKesimpulanContent" style="font-size: 13px; line-height: 1.6;">
+                        <em>Silakan masukkan data pengukuran pada tabel di atas untuk melihat kesimpulan otomatis.</em>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -443,7 +521,7 @@
     <div class="side-panel">
         <div class="side-panel-info">
             <h4>GEOMATICS</h4>
-            <p>Sistem Kalkulasi & Pengolahan Data Ukur Waterpass SMK</p>
+            <p>Sistem Kalkulasi & Pengolahan Data Ukur Waterpass & Poligon</p>
         </div>
         <div class="tab-nav-vertical">
             <button class="tab-btn active" onclick="switchTab(event, 'tab-single')">
@@ -457,6 +535,9 @@
             </button>
             <button class="tab-btn" onclick="switchTab(event, 'tab-memanjang')">
                 <span>📏</span> Profil Memanjang
+            </button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-poligon')">
+                <span>📐</span> Poligon Tertutup
             </button>
             <button class="tab-btn disabled" disabled>
                 <span>📐</span> Profil Melintang (Coming Soon)
@@ -482,7 +563,6 @@
         return parseFloat(val.toFixed(desimal)).toString();
     }
 
-    // Fungsi Cek Toleransi Benang (Toleransi = 0.003 meter / 3 mm)
     function periksaToleransiInput(inputEl, ba, bt, bb) {
         if (!inputEl) return;
         if (isNaN(ba) || isNaN(bt) || isNaN(bb)) {
@@ -793,13 +873,13 @@
     }
 
     /* ==========================================================================
-       5. TAB PROFIL MEMANJANG (Patok dikosongi, Tanah terisi otomatis)
+       5. TAB PROFIL MEMANJANG (Titik, Patok dikosongi, Tanah terisi otomatis)
        ========================================================================== */
-    let pm_slagCount = 3;
+    let pm_titikCount = 3;
     function pm_ubahSlag(val) {
-        pm_slagCount += val;
-        if (pm_slagCount < 1) pm_slagCount = 1;
-        document.getElementById('pm_slag_counter').innerText = pm_slagCount + " Slag";
+        pm_titikCount += val;
+        if (pm_titikCount < 1) pm_titikCount = 1;
+        document.getElementById('pm_slag_counter').innerText = pm_titikCount + " Titik";
         pm_inisialisasiTabel();
     }
 
@@ -807,7 +887,7 @@
         let tbody = document.getElementById('pm_tbody');
         if (!tbody) return;
         let html = "";
-        for (let i = 1; i <= pm_slagCount; i++) {
+        for (let i = 1; i <= pm_titikCount; i++) {
             html += `
             <tr>
                 <td rowspan="2"><input type="text" value="TP${i}" id="pm_tp_${i}" oninput="this.setAttribute('value', this.value)"><br>TA=<input type="number" value="1.3" id="pm_ta_${i}" oninput="this.setAttribute('value', this.value); pm_prosesKalkulasi()" step="any" style="width:60px;"></td>
@@ -836,7 +916,7 @@
         let elevAwal = parseFloat(document.getElementById('pm_elevasi_awal').value) || 17.951;
         let currentElev = elevAwal;
 
-        for (let i = 1; i <= pm_slagCount; i++) {
+        for (let i = 1; i <= pm_titikCount; i++) {
             let ta = parseFloat(document.getElementById(`pm_ta_${i}`)?.value) || 1.3;
             let el_ba = document.getElementById(`pm_bab_ba_${i}`);
             let el_bb = document.getElementById(`pm_bab_bb_${i}`);
@@ -861,7 +941,248 @@
     }
 
     /* ==========================================================================
-       6. FUNGSI DOWNLOAD PDF
+       6. TAB POLIGON TERTUTUP (Kalkulasi Otomatis dan Berurutan & Highlight Merah Data Eror)
+       ========================================================================== */
+    let poligon_titikCount = 4;
+    function poligon_ubahTitik(val) {
+        poligon_titikCount += val;
+        if (poligon_titikCount < 3) poligon_titikCount = 3;
+        document.getElementById('poligon_titik_counter').innerText = poligon_titikCount + " Titik";
+        poligon_inisialisasiTabel();
+    }
+
+    function poligon_inisialisasiTabel() {
+        let tbody = document.getElementById('poligon_tbody');
+        if (!tbody) return;
+        let html = "";
+        let defaultTitik = ["P2", "P3", "P4", "P1", "P5", "P6", "P7", "P8", "P9", "P10"];
+        
+        // Baris 0: Baris Khusus Input Azimuth Awal dan Koordinat Awal X & Y
+        html += `
+        <tr>
+            <td class="empty-cell">-</td>
+            <td colspan="7" class="empty-cell">-</td>
+            <td class="empty-cell">-</td>
+            <td><input type="number" placeholder="°" id="pol_az_deg_0" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+            <td><input type="number" placeholder="'" id="pol_az_min_0" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+            <td><input type="number" placeholder="\"" id="pol_az_sec_0" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+            <td class="empty-cell">-</td><td class="empty-cell">-</td>
+            <td class="empty-cell">-</td><td class="empty-cell">-</td>
+            <td><input type="number" value="0" id="pol_x_0" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+            <td><input type="number" value="0" id="pol_y_0" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+        </tr>`;
+
+        // Baris Titik Pengukuran
+        for (let i = 1; i <= poligon_titikCount; i++) {
+            let tName = defaultTitik[i-1] ? defaultTitik[i-1] : `P${i}`;
+            html += `
+            <tr>
+                <td><input type="text" value="${tName}" id="pol_titik_${i}" oninput="this.setAttribute('value', this.value)"></td>
+                <td><input type="number" placeholder="°" id="pol_d_deg_${i}" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+                <td><input type="number" placeholder="'" id="pol_d_min_${i}" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+                <td><input type="number" placeholder="\"" id="pol_d_sec_${i}" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+                <td class="readonly-val" id="pol_kor_${i}">-</td>
+                <td class="readonly-val" id="pol_t_deg_${i}">-</td>
+                <td class="readonly-val" id="pol_t_min_${i}">-</td>
+                <td class="readonly-val" id="pol_t_sec_${i}">-</td>
+                <td><input type="number" placeholder="Jarak" id="pol_jarak_${i}" oninput="this.setAttribute('value', this.value); poligon_hitung()" step="any"></td>
+                <td class="readonly-val" id="pol_az_deg_${i}">-</td>
+                <td class="readonly-val" id="pol_az_min_${i}">-</td>
+                <td class="readonly-val" id="pol_az_sec_${i}">-</td>
+                <td class="readonly-val" id="pol_dx_${i}">-</td>
+                <td class="readonly-val" id="pol_kdx_${i}">-</td>
+                <td class="readonly-val" id="pol_dy_${i}">-</td>
+                <td class="readonly-val" id="pol_kdy_${i}">-</td>
+                <td class="readonly-val" id="pol_x_${i}">-</td>
+                <td class="readonly-val" id="pol_y_${i}">-</td>
+            </tr>`;
+        }
+        tbody.innerHTML = html;
+        poligon_hitung();
+    }
+
+    function dmsToDeg(deg, min, sec) {
+        return (deg || 0) + (min || 0) / 60 + (sec || 0) / 3600;
+    }
+
+    function degToDms(decimalDeg) {
+        let isNegative = decimalDeg < 0;
+        let absVal = Math.abs(decimalDeg);
+        let d = Math.floor(absVal);
+        let mFloat = (absVal - d) * 60;
+        let m = Math.floor(mFloat);
+        let s = (mFloat - m) * 60;
+        if (isNegative) d = -d;
+        return { deg: d, min: m, sec: s };
+    }
+
+    function formatSecToDMS(secTotal) {
+        let isNeg = secTotal < 0;
+        let absSec = Math.abs(secTotal);
+        let d = Math.floor(absSec / 3600);
+        let remSec = absSec % 3600;
+        let m = Math.floor(remSec / 60);
+        let s = remSec % 60;
+        let prefix = isNeg ? "-" : "";
+        return `${prefix}${d}° ${m}' ${s.toFixed(1)}"`;
+    }
+
+    function poligon_hitung() {
+        let n = poligon_titikCount;
+        let jenis = document.getElementById('poligon_jenis_sudut').value;
+        let syaratDeg = (jenis === 'luar') ? (n + 2) * 180 : (n - 2) * 180;
+
+        let totalSecData = 0;
+        let dataSudut = [];
+        let dataJarak = [];
+
+        for (let i = 1; i <= n; i++) {
+            let d = parseFloat(document.getElementById(`pol_d_deg_${i}`)?.value) || 0;
+            let m = parseFloat(document.getElementById(`pol_d_min_${i}`)?.value) || 0;
+            let s = parseFloat(document.getElementById(`pol_d_sec_${i}`)?.value) || 0;
+            let dist = parseFloat(document.getElementById(`pol_jarak_${i}`)?.value) || 0;
+
+            let secTotal = (d * 3600) + (m * 60) + s;
+            totalSecData += secTotal;
+            dataSudut.push(secTotal);
+            dataJarak.push(dist);
+        }
+
+        let syaratSec = syaratDeg * 3600;
+        let errorSec = totalSecData - syaratSec;
+        let koreksiPerTitikSec = -errorSec / n;
+
+        let totalJarak = dataJarak.reduce((a, b) => a + b, 0);
+
+        // Input Azimuth Awal dari baris paling atas (indeks 0)
+        let azDeg0 = parseFloat(document.getElementById(`pol_az_deg_0`)?.value) || 0;
+        let azMin0 = parseFloat(document.getElementById(`pol_az_min_0`)?.value) || 0;
+        let azSec0 = parseFloat(document.getElementById(`pol_az_sec_0`)?.value) || 0;
+        let currentAzimuthDec = dmsToDeg(azDeg0, azMin0, azSec0);
+
+        let sumDeltaX = 0, sumDeltaY = 0;
+        let rawDeltas = [];
+
+        for (let i = 0; i < n; i++) {
+            let idx = i + 1;
+            let terkoreksiSec = dataSudut[i] + koreksiPerTitikSec;
+            
+            let tDms = formatSecToDMS(terkoreksiSec);
+            let parts = tDms.split(' ');
+
+            let korEl = document.getElementById(`pol_kor_${idx}`);
+            if (korEl) korEl.innerText = formatSecToDMS(koreksiPerTitikSec);
+            
+            let tdDeg = document.getElementById(`pol_t_deg_${idx}`);
+            let tdMin = document.getElementById(`pol_t_min_${idx}`);
+            let tdSec = document.getElementById(`pol_t_sec_${idx}`);
+            if (tdDeg) tdDeg.innerText = parts[0].replace('°', '');
+            if (tdMin) tdMin.innerText = parts[1].replace("'", '');
+            if (tdSec) tdSec.innerText = parts[2].replace('"', '');
+
+            // RUMUS: Azimuth = Azimuth Awal/Sebelumnya + Sudut Terkoreksi ± 180°
+            currentAzimuthDec = currentAzimuthDec + (terkoreksiSec / 3600) - 180;
+            while (currentAzimuthDec < 0) currentAzimuthDec += 360;
+            while (currentAzimuthDec >= 360) currentAzimuthDec -= 360;
+
+            let azDms = degToDms(currentAzimuthDec);
+            let azD = document.getElementById(`pol_az_deg_${idx}`);
+            let azM = document.getElementById(`pol_az_min_${idx}`);
+            let azS = document.getElementById(`pol_az_sec_${idx}`);
+            if (azD) azD.innerText = azDms.deg;
+            if (azM) azM.innerText = azDms.min;
+            if (azS) azS.innerText = formatAngka(azDms.sec, 1);
+
+            // RUMUS: ΔX = Jarak * Sin(Azimuth) & ΔY = Jarak * Cos(Azimuth)
+            let rad = currentAzimuthDec * Math.PI / 180;
+            let dist = dataJarak[i];
+            let dx = dist * Math.sin(rad);
+            let dy = dist * Math.cos(rad);
+
+            sumDeltaX += dx;
+            sumDeltaY += dy;
+            rawDeltas.push({ dx, dy, dist });
+        }
+
+        // Hitung Penutupan Linear untuk Evaluasi Toleransi
+        let linearClosure = Math.sqrt(sumDeltaX * sumDeltaX + sumDeltaY * sumDeltaY);
+        let isToleransiValid = linearClosure < 0.1;
+
+        // Visualisasi Ringkasan Kesimpulan
+        let resultBoxEl = document.getElementById('poligonResultBox');
+        if (!isToleransiValid) {
+            resultBoxEl.classList.add('alert-error-box');
+        } else {
+            resultBoxEl.classList.remove('alert-error-box');
+        }
+
+        // Koordinat Awal X dan Y dari baris 0
+        let startX = parseFloat(document.getElementById(`pol_x_0`)?.value) || 0;
+        let startY = parseFloat(document.getElementById(`pol_y_0`)?.value) || 0;
+        let currentX = startX, currentY = startY;
+
+        for (let i = 0; i < n; i++) {
+            let idx = i + 1;
+            let item = rawDeltas[i];
+            
+            // RUMUS: Koreksi ΔX & ΔY = -(Jarak / Total Jarak) * ΣΔ
+            let kdx = totalJarak > 0 ? -(item.dist / totalJarak) * sumDeltaX : 0;
+            let kdy = totalJarak > 0 ? -(item.dist / totalJarak) * sumDeltaY : 0;
+
+            let finalDx = item.dx + kdx;
+            let finalDy = item.dy + kdy;
+
+            let dxEl = document.getElementById(`pol_dx_${idx}`);
+            let kdxEl = document.getElementById(`pol_kdx_${idx}`);
+            let dyEl = document.getElementById(`pol_dy_${idx}`);
+            let kdyEl = document.getElementById(`pol_kdy_${idx}`);
+
+            if (dxEl) dxEl.innerText = formatAngka(item.dx);
+            if (kdxEl) kdxEl.innerText = formatAngka(kdx);
+            if (dyEl) dyEl.innerText = formatAngka(item.dy);
+            if (kdyEl) kdyEl.innerText = formatAngka(kdy);
+
+            // RUMUS: Koordinat = Koordinat Awal/Sebelumnya + Δ sesudah dikoreksi
+            currentX = currentX + finalDx;
+            currentY = currentY + finalDy;
+
+            let xEl = document.getElementById(`pol_x_${idx}`);
+            let yEl = document.getElementById(`pol_y_${idx}`);
+            if (xEl) xEl.innerText = formatAngka(currentX);
+            if (yEl) yEl.innerText = formatAngka(currentY);
+
+            // HIGHLIGHT MERAH KHUSUS PADA ANGKA/DATA SALAH PADA TABEL PERHITUNGAN
+            // Ketika Di Luar Toleransi: Data ΔX, ΔY, dan Koordinat X/Y yang menyimpang diwarnai merah
+            const targetElements = [dxEl, dyEl, xEl, yEl];
+            targetElements.forEach(el => {
+                if (el) {
+                    if (!isToleransiValid) {
+                        el.classList.add('out-of-tolerance-data');
+                    } else {
+                        el.classList.remove('out-of-tolerance-data');
+                    }
+                }
+            });
+        }
+
+        let ketKesimpulan = `
+            <b>Jumlah Titik ($n$):</b> ${n} Titik<br>
+            <b>Syarat Sudut (${jenis === 'luar' ? '(n+2)×180°' : '(n-2)×180°'}):</b> ${(syaratSec / 3600).toFixed(3)}°<br>
+            <b>Jumlah Sudut Data:</b> ${(totalSecData / 3600).toFixed(3)}°<br>
+            <b>Kesalahan Sudut ($f_\\beta$):</b> ${errorSec.toFixed(1)}"<br>
+            <b>Koreksi Sudut per Titik:</b> ${formatSecToDMS(koreksiPerTitikSec)}<br>
+            <b>Total Keliling (\\(\\Sigma D\\)):</b> ${totalJarak.toFixed(3)} m<br>
+            <b>Kesalahan Absis (\\(\\Sigma \\Delta X\\)):</b> <span class="${!isToleransiValid ? 'out-of-tolerance-data' : ''}">${sumDeltaX.toFixed(4)} m</span><br>
+            <b>Kesalahan Ordinat (\\(\\Sigma \\Delta Y\\)):</b> <span class="${!isToleransiValid ? 'out-of-tolerance-data' : ''}">${sumDeltaY.toFixed(4)} m</span><br>
+            <b>Kesalahan Linear / Penutupan:</b> <span class="${!isToleransiValid ? 'out-of-tolerance-data' : ''}">${linearClosure.toFixed(4)} m</span><br>
+            <b>Status Toleransi:</b> <span style="color:${isToleransiValid ? 'green' : '#d32f2f'}; font-weight:bold; font-size:14px;">${isToleransiValid ? 'Memenuhi Standar / Valid' : 'DI LUAR TOLERANSI STANDAR (SEGERA PERBAIKI DATA)'}</span>
+        `;
+        document.getElementById('poligonKesimpulanContent').innerHTML = ketKesimpulan;
+        if (window.MathJax) MathJax.typesetPromise();
+    }
+
+    /* ==========================================================================
+       7. FUNGSI DOWNLOAD PDF
        ========================================================================== */
     function processTableForPDF(tableId) {
         const originalTable = document.getElementById(tableId);
@@ -928,11 +1249,31 @@
         doc.save('Form_Profil_Memanjang.pdf');
     }
 
+    function downloadPDF_Poligon() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('landscape', 'mm', [330, 210]);
+        let pw = doc.internal.pageSize.getWidth();
+        doc.setFont("helvetica", "bold"); doc.setFontSize(14);
+        doc.text("PERHITUNGAN POLIGON TERTUTUP", pw / 2, 14, { align: "center" });
+        doc.setFontSize(10); doc.setFont("helvetica", "normal");
+        doc.text("TEKNIK GEOMATIKA - SMK NEGERI 1 NGANJUK", pw / 2, 20, { align: "center" });
+        doc.setLineWidth(0.5); doc.line(15, 24, pw - 15, 24);
+
+        doc.autoTable({ 
+            html: processTableForPDF('tabel-poligon'), startY: 28, theme: 'grid', 
+            styles: { fontSize: 7, halign: 'center', valign: 'middle', textColor: [0, 0, 0], fillColor: [255, 255, 255], lineColor: [0, 0, 0], lineWidth: 0.3 },
+            headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', lineWidth: 0.3, lineColor: [0, 0, 0] },
+            bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0] }
+        });
+        doc.save('Form_Poligon_Tertutup.pdf');
+    }
+
     /* Inisialisasi awal halaman */
     document.addEventListener('DOMContentLoaded', function() {
         pp_generateTable();
         ds_inisialisasiTabel();
         pm_inisialisasiTabel();
+        poligon_inisialisasiTabel();
     });
 </script>
 
